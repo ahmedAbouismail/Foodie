@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="de.abou.foodie.SplashFragment"
+        android:label="splashFragment"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_introFragment"
+            app:destination="@id/introFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/introFragment"
+        android:name="de.abou.foodie.intro.introFragment"
+        android:label="fragment_intro"
+        tools:layout="@layout/fragment_intro" >
+        <action
+            android:id="@+id/action_introFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myProfileFragment2"
+        android:name="de.abou.foodie.drawer.MyProfileFragment"
+        android:label="fragment_my_profile"
+        tools:layout="@layout/fragment_my_profile" />
+    <fragment
+        android:id="@+id/signoutFragment"
+        android:name="de.abou.foodie.drawer.SignoutFragment"
+        android:label="fragment_signout"
+        tools:layout="@layout/fragment_signout" />
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="de.abou.foodie.main.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_myProfileFragment2"
+            app:destination="@id/myProfileFragment2" />
+        <action
+            android:id="@+id/action_mainFragment_to_signoutFragment"
+            app:destination="@id/signoutFragment" />
+    </fragment>
+</navigation>
