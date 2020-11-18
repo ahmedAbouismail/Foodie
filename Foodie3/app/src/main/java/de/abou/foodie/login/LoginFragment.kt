@@ -18,7 +18,7 @@ import de.abou.foodie.R
 import de.abou.foodie.databinding.FragmentLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.firebase.ui.auth.IdpResponse
-import de.abou.foodie.databinding.FragmentIntroBinding
+
 
 
 class LoginFragment : Fragment() {
@@ -68,20 +68,20 @@ class LoginFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IntroFragment.SIGN_IN_RESULT_CODE) {
+        if (requestCode == LoginFragment.SIGN_IN_RESULT_CODE) {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in user.
                 //findNavController().navigate(R.id.testFragment)
-                navController.navigate(R.id.testFragment)
+                navController.navigate(R.id.action_splashFragment_to_postsFragment)
                 Log.i(
-                    IntroFragment.TAG,
+                    LoginFragment.TAG,
                     "Successfully signed in user " +
                             "${FirebaseAuth.getInstance().currentUser?.displayName}!"
                 )
             } else {
-                navController.navigate(R.id.myProfileFragment)
-                Log.i(IntroFragment.TAG, "Sign in unsuccessful ${response?.error?.errorCode}")
+                navController.navigate(R.id.action_splashFragment_to_loginFragment)
+                Log.i(LoginFragment.TAG, "Sign in unsuccessful ${response?.error?.errorCode}")
             }
         }
     }

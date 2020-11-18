@@ -13,37 +13,23 @@
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_postsFragment"
+            app:destination="@id/postsFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/myProfileFragment2"
-        android:name="de.abou.foodie.drawer.MyProfileFragment"
-        android:label="fragment_my_profile"
-        tools:layout="@layout/fragment_my_profile" />
     <fragment
         android:id="@+id/signoutFragment"
         android:name="de.abou.foodie.drawer.SignoutFragment"
         android:label="fragment_signout"
         tools:layout="@layout/fragment_signout" />
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="de.abou.foodie.main.MainFragment"
-        android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
-        <action
-            android:id="@+id/action_mainFragment_to_myProfileFragment2"
-            app:destination="@id/myProfileFragment2" />
-        <action
-            android:id="@+id/action_mainFragment_to_signoutFragment"
-            app:destination="@id/signoutFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/loginFragment"
         android:name="de.abou.foodie.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
     <fragment
-        android:id="@+id/testFragment"
-        android:name="de.abou.foodie.login.testFragment"
-        android:label="fragment_test"
-        tools:layout="@layout/fragment_test" />
+        android:id="@+id/postsFragment"
+        android:name="de.abou.foodie.main.postsFragment"
+        android:label="fragment_posts"
+        tools:layout="@layout/fragment_posts" />
 </navigation>

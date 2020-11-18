@@ -40,27 +40,13 @@ class SplashFragment : Fragment() {
             var currentUserID = Firestore().getCurrentUserId()
 
             if(currentUserID.isNotEmpty()){
-                navController.navigate(R.id.testFragment)
+                navController.navigate(R.id.action_splashFragment_to_postsFragment)
             }else{
-                navController.navigate(R.id.myProfileFragment)
+                navController.navigate(R.id.action_splashFragment_to_loginFragment)
             }
         }, 2500)
 
         return binding.root
-    }
-
-    private fun observeAuthenticationState() {
-
-        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            when (authenticationState) {
-                LoginFragmentViewModel.AuthenticationState.AUTHENTICATED -> {
-                    navController.navigate(R.id.testFragment)
-                }
-                else -> {
-                    navController.navigate(R.id.myProfileFragment)
-                }
-            }
-        })
     }
 
 }
