@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="signInViewModel"
+            type="de.abou.foodie.screens.regestration.signIn.SignInViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/introFragmrnt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:context=".model.LoginFragment">
+
+
+        <EditText
+            android:id="@+id/signInEmail"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="@dimen/originalMerge"
+            android:layout_marginTop="@dimen/TopMergeEmailField"
+            android:layout_marginEnd="@dimen/originalMerge"
+            android:ems="10"
+            android:hint="@string/email"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/signInPassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/originalMerge"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/originalMerge"
+            android:ems="10"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signInEmail" />
+
+        <Button
+            android:id="@+id/signInButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/signInMerge"
+            android:layout_marginTop="@dimen/signInMerge"
+            android:layout_marginEnd="@dimen/signInMerge"
+            android:text="@string/signIn"
+            android:onClick="@{() -> signInViewModel.onSignIn(signInEmail.getText().toString(), signInPassword.getText().toString())}"
+            android:background="@android:color/background_dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signInPassword" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
