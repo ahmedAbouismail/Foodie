@@ -1,31 +1,41 @@
-package de.abou.foodie
+package de.abou.foodie.screens.mainActivity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import de.abou.foodie.R
 import de.abou.foodie.databinding.ActivityMainBinding
+import de.abou.foodie.screens.title.PostFragmentDirections
+import de.abou.foodie.screens.title.PostViewModel
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navController: NavController
+    private lateinit var viewModel: MainActivityViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+
         // Create Drawer Button
         drawerLayout = binding.drawerLayout
-
         //Add navView To MainActivity
          navController = this.findNavController(R.id.myNavHostFragment)
 
-//        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
         //Add Drawer to Action Bar
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
@@ -34,8 +44,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //To hide the Bar
         supportActionBar?.hide()
 
-        binding.navView.setNavigationItemSelectedListener(this)
+        //Authentication Check
+        observeAuthenticationState()
 
+        binding.navView.setNavigationItemSelectedListener(this)
     }
 
 
@@ -57,5 +69,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    private fun observeAuthenticationState() {
+        viewModel.authenticationState.observe(this, Observer { authenticationState ->
+            when(authenticationState){
+                MainActivityViewModel.AuthenticationState.AUTHENTICATED->{
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                }else->{
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            }
+            }
+        })
+    }
 
 }
