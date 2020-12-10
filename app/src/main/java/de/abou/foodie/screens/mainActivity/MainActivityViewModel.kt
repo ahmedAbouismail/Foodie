@@ -1,8 +1,10 @@
 package de.abou.foodie.screens.mainActivity
 
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
+import com.firebase.ui.auth.AuthUI
 import de.abou.foodie.FirebaseUserLiveData
 
 class MainActivityViewModel:ViewModel() {
@@ -24,4 +26,7 @@ class MainActivityViewModel:ViewModel() {
         }
     }
 
+    fun signOut(){
+
+    }
 }

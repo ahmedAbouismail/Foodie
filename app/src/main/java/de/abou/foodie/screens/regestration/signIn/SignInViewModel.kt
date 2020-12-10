@@ -8,6 +8,9 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import de.abou.foodie.database.MyFirestore
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.supervisorScope
 
 
 class SignInViewModel():ViewModel() {
@@ -17,6 +20,7 @@ class SignInViewModel():ViewModel() {
         const val SIGN_IN_RESULT_CODE = 1001
     }
 
+
     private var auth: FirebaseAuth = Firebase.auth
 
     //Live Data
@@ -24,7 +28,7 @@ class SignInViewModel():ViewModel() {
     val eventSignIn : LiveData<Boolean>
     get() = _eventSignIn
 
-    fun onSignIn(email : String, password: String){
+     fun onSignIn(email : String, password: String){
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful){

@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -12,6 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import de.abou.foodie.R
@@ -34,7 +37,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Create Drawer Button
         drawerLayout = binding.drawerLayout
         //Add navView To MainActivity
-         navController = this.findNavController(R.id.myNavHostFragment)
+        navController = this.findNavController(R.id.myNavHostFragment)
 
 
         //Add Drawer to Action Bar
@@ -59,7 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.signOutFragment -> {
-                FirebaseAuth.getInstance().signOut()
+                AuthUI.getInstance().signOut(this)
 
             }
             R.id.myProfileFragment ->{
@@ -80,5 +83,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         })
     }
-
 }

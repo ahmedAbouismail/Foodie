@@ -34,12 +34,6 @@ class PostFragment : Fragment() {
             container, false
         )
 
-        binding.signOutBtn.setOnClickListener {
-
-            signOut()
-            val action = PostFragmentDirections.actionPostFragmentToSignInFragment()
-            NavHostFragment.findNavController(this).navigate(action)
-        }
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -65,9 +59,7 @@ class PostFragment : Fragment() {
         })
     }
 
-    fun signOut(){
-        AuthUI.getInstance().signOut(requireContext())
-    }
+
 
 }
 

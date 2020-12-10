@@ -4,9 +4,18 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import de.abou.foodie.database.MyFirestore
+import de.abou.foodie.database.User
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlin.coroutines.suspendCoroutine
 
 class SignUpViewModel:ViewModel() {
     companion object {
@@ -15,6 +24,8 @@ class SignUpViewModel:ViewModel() {
     }
 
     private var auth: FirebaseAuth = Firebase.auth
+    private val db = MyFirestore()
+    private lateinit var user : User
 
     //Live Data
     private val _eventSignUp = MutableLiveData<Boolean>()
@@ -22,16 +33,32 @@ class SignUpViewModel:ViewModel() {
         get() = _eventSignUp
 
     fun onSignUp(email : String, password: String){
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful){
-                    Log.d(TAG, "createUserWithEmail:success")
-                    _eventSignUp.value = true
-                }else{
-                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                    _eventSignUp.value = false
-                }
+        try {
+            viewModelScope.launch(Dispatchers.Main) {
+                auth.createUserWithEmailAndPassword(email, password).await()
+                db.insertUser(createUser(email))
+                Log.d(TAG, "createUserWithEmail:success")
+                _eventSignUp.value = true
             }
+        }catch (e:FirebaseAuthException){
+            Log.w(TAG, "createUserWithEmail:failure", e)
+            _eventSignUp.value = false
+        }
 
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful){
+//
+//
+//                    Log.d(TAG, "createUserWithEmail:success")
+//                    _eventSignUp.value = true
+//                }else{
+//                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+//                    _eventSignUp.value = false
+//                }
+//            }
+    }
+    private fun createUser(email:String):User{
+        user = User(null,null,email,null,null)
+        return user
     }
 }
