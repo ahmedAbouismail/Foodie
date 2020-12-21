@@ -10,7 +10,7 @@ import kotlinx.coroutines.tasks.await
 class MyFirestore {
 
     companion object{
-        val TAG : String = "MyFirestore"
+        const val TAG : String = "MyFirestore"
     }
     private val _Firetore = FirebaseFirestore.getInstance()
 

@@ -1,14 +1,12 @@
 package de.abou.foodie.screens.regestration.signUp
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import de.abou.foodie.FirebaseUserLiveData
 import de.abou.foodie.database.MyFirestore
 import de.abou.foodie.database.User
 import kotlinx.coroutines.Dispatchers
@@ -61,4 +59,6 @@ class SignUpViewModel:ViewModel() {
         user = User(null,null,email,null,null)
         return user
     }
+
+
 }

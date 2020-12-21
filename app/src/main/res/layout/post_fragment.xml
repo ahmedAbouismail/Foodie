@@ -1,49 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".screens.title.postsFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/postFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <data>
+        <variable
+            name="postViewModel"
+            type="de.abou.foodie.screens.title.PostViewModel" />
+    </data>
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
-
-        <Button
-            android:id="@+id/signOutBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="Sign Out"
-
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="183dp"
-            tools:layout_editor_absoluteY="240dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       tools:context=".screens.title.PostFragment">
 
 
+
+       <ImageView
+           android:id="@+id/addPostImageBtn"
+           android:layout_width= "200dp"
+           android:layout_height="200dp"
+           android:clickable="true"
+           android:layout_marginTop="@dimen/addPostImageMarginTop"
+           android:contentDescription="@string/addImageContentDescription"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent"/>
+
+
+       <EditText
+           android:id="@+id/addPostTitle"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="@dimen/addPostTitleStart"
+           android:layout_marginTop="@dimen/addPostTitleToImage"
+           android:layout_marginEnd="@dimen/addPostTitleEnd"
+           android:hint="@string/addPostTitleHint"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/addPostImageBtn" />
+
+
+       <EditText
+           android:id="@+id/addPostDescription"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="@dimen/addPostMarginStartAndEnd"
+           android:layout_marginTop="@dimen/addPostDescriptionToTitle"
+           android:layout_marginEnd="@dimen/addPostMarginStartAndEnd"
+           android:hint="@string/addPostTitleHint"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/addPostTitle" />
+
+       <Button
+           android:id="@+id/addPostBtn"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="@dimen/addPostBtnToDescription"
+           android:text="@string/addPostBtn"
+           android:clickable="true"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/addPostDescription"
+           android:backgroundTint="@android:color/background_dark"/>
+
+
+   </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

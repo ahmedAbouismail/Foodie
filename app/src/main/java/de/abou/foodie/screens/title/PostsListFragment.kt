@@ -1,0 +1,79 @@
+package de.abou.foodie.screens.title
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
+import de.abou.foodie.R
+import de.abou.foodie.databinding.PostsListFragmentBinding
+
+
+class PostsListFragment : Fragment() {
+
+    private lateinit var viewModel: PostsListViewModel
+
+    private lateinit var binding : PostsListFragmentBinding
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        viewModel = ViewModelProvider(this).get(PostsListViewModel::class.java)
+
+
+        binding = DataBindingUtil.inflate<PostsListFragmentBinding>(
+            inflater,
+            R.layout.posts_list_fragment,
+            container, false
+        )
+
+        // Inflate the layout for this fragment
+        return binding.root
+    }
+
+
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeAuthenticationState()
+    }
+
+    private fun observeAuthenticationState() {
+        val action = PostsListFragmentDirections.actionPostFragmentToSignInFragment()
+        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+            when(authenticationState){
+                PostsListViewModel.AuthenticationState.AUTHENTICATED->{
+                    Toast.makeText(activity, "SignedIn", Toast.LENGTH_SHORT).show()
+                }else->{
+                    NavHostFragment.findNavController(this).navigate(action)
+                }
+            }
+        })
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

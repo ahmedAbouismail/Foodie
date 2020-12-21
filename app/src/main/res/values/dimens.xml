@@ -5,4 +5,27 @@
     <dimen name="originalMerge">16dp</dimen>
     <dimen name="TopMergeEmailField">240dp</dimen>
     <dimen name="signInMerge">32dp</dimen>
+
+    //PostList Layout
+    <dimen name="postImageWidth">200dp</dimen>
+    <dimen name="postImageHight">200dp</dimen>
+    <dimen name="postImageMarginStart">16dp</dimen>
+    <dimen name="postImageMarginTop">16dp</dimen>
+    <dimen name="postDescriptionMarginEnd">16dp</dimen>
+    <dimen name="postDescriptionMarginStart">16dp</dimen>
+    <dimen name="postDescriptionMarginBottom">16dp</dimen>
+    <dimen name="postDescriptionToImage">32dp</dimen>
+    <dimen name="postImgeMarginBottom">32dp</dimen>
+    <dimen name="postDescriptionMarginTop">16dp</dimen>
+    <dimen name="postTitleMarginTop">32dp</dimen>
+    <dimen name="postTitleMarginStart">16dp</dimen>
+
+    //Add PostLayout
+    <dimen name="addPostImageMarginTop">150dp</dimen>
+   <dimen name="addPostTitleToImage">60dp</dimen>
+   <dimen name="addPostTitleEnd">16dp</dimen>
+   <dimen name="addPostTitleStart">16dp</dimen>
+   <dimen name="addPostDescriptionToTitle">32dp</dimen>
+   <dimen name="addPostMarginStartAndEnd">16dp</dimen>
+    <dimen name="addPostBtnToDescription">75dp</dimen>
 </resources>

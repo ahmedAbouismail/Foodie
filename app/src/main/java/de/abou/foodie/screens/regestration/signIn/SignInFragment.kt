@@ -15,6 +15,8 @@ import androidx.navigation.fragment.NavHostFragment
 import de.abou.foodie.R
 import de.abou.foodie.databinding.SignInFragmentBinding
 import de.abou.foodie.screens.regestration.signUp.SignUpFragmentDirections
+import de.abou.foodie.screens.title.PostsListFragmentDirections
+import de.abou.foodie.screens.title.PostsListViewModel
 
 
 class SignInFragment : Fragment() {
@@ -46,7 +48,28 @@ class SignInFragment : Fragment() {
         return binding.root
     }
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeAuthenticationState()
+    }
+
+    private fun observeAuthenticationState() {
+        val action = SignInFragmentDirections.actionSignInFragmentToPostFragment()
+        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+            when(authenticationState){
+                SignInViewModel.AuthenticationState.AUTHENTICATED->{
+                    NavHostFragment.findNavController(this).navigate(action)
+                    Toast.makeText(activity, "SignedIn", Toast.LENGTH_SHORT).show()
+                }else->{
+                Toast.makeText(activity, "Sign In please", Toast.LENGTH_SHORT).show()
+            }
+            }
+        })
+    }
+
     private fun signIn() {
+        //val actionToPost = SignInFragmentDirections.actionSignInFragmentToPostFragment()
         val actionToPost = SignInFragmentDirections.actionSignInFragmentToPostFragment()
         val actionToSignUp = SignInFragmentDirections.actionSignInFragmentToSignUpFragment()
         viewModel.eventSignIn.observe(viewLifecycleOwner, Observer { hasSignedIn ->

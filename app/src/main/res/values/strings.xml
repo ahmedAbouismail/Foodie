@@ -20,4 +20,12 @@
     <string name="password">Password</string>
     <string name="email">Email</string>
     <string name="signIn">Sign In</string>
+    <string name="FirstNameSignUp">first name</string>
+    <string name="LastNameSignUp">last name</string>
+    <string name="addPostContentDescription">Add New Post</string>
+    <string name="cardImageDescription">Card Image</string>
+    //Add PostLayout
+    <string name="addImageContentDescription">Add Image</string>
+    <string name="addPostTitleHint">Add Title</string>
+    <string name="addPostBtn">Add</string>
 </resources>

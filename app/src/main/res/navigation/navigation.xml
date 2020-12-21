@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/postFragment">
+    app:startDestination="@id/signInFragment">
 
     <fragment
-        android:id="@+id/postFragment"
-        android:name="de.abou.foodie.screens.title.PostFragment"
+        android:id="@+id/postListFragment"
+        android:name="de.abou.foodie.screens.title.PostsListFragment"
         android:label="fragment_posts"
-        tools:layout="@layout/post_fragment" >
+        tools:layout="@layout/posts_list_fragment" >
         <action
             android:id="@+id/action_postFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
@@ -19,11 +19,11 @@
         android:name="de.abou.foodie.screens.regestration.signIn.SignInFragment"
         android:label="SignInFragment" >
         <action
-            android:id="@+id/action_signInFragment_to_postFragment"
-            app:destination="@id/postFragment" />
-        <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_postFragment"
+            app:destination="@id/postFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -32,6 +32,15 @@
         tools:layout="@layout/sign_up_fragment" >
         <action
             android:id="@+id/action_signUpFragment_to_postFragment"
-            app:destination="@id/postFragment" />
+            app:destination="@id/postListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="de.abou.foodie.screens.title.PostFragment"
+        android:label="post_fragment"
+        tools:layout="@layout/post_fragment" >
+        <action
+            android:id="@+id/action_postFragment_to_signInFragment2"
+            app:destination="@id/signInFragment" />
     </fragment>
 </navigation>
