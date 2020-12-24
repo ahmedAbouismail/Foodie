@@ -1,60 +1,56 @@
 package de.abou.foodie.screens.title
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
-import android.content.pm.PackageManager
+import android.app.Application
 import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import android.os.Build
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.FirebaseAuthException
 import de.abou.foodie.FirebaseUserLiveData
 import de.abou.foodie.database.MyFirestore
+import de.abou.foodie.database.Post
 import de.abou.foodie.storage.MyFirebaseStorage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
-import java.util.jar.Manifest
-import kotlin.coroutines.coroutineContext
 
 
-class PostViewModel :ViewModel(){
+class PostViewModel(val database:MyFirestore,  application: Application) :AndroidViewModel(application){
 
     private companion object{
         const val TAG = "PostViewModel"
         const val maxLength : Int = 200
+
     }
+
 
     val imageUrlLiveData = MutableLiveData<Uri>()
 
 
-
     val checkPermissionLiveData = MutableLiveData<Boolean>()
 
+    val titleLiveData = MutableLiveData<String>()
+    val descriptionLiveData = MutableLiveData<String>()
 
-    private val _isImageUploaded = MutableLiveData<Boolean>()
-    val isImageUploaded:LiveData<Boolean>
-        get() = _isImageUploaded
-
-
-    private lateinit var bitmap : Bitmap
-    private var _resultLiveData = MutableLiveData<Bitmap>()
-    val resultLiveData : LiveData<Bitmap>
-    get() = _resultLiveData
 
     private var aspectRatio : Double = 0.0
     private var targetWidth: Int = 0
     private var targetHeight : Int = 0
 
+    private lateinit var bitmap : Bitmap
     private lateinit var resizedImage : Bitmap
+    private var baos = ByteArrayOutputStream()
+
+
+    private  var _db = MyFirestore()
+
+
+    private var currentUser = FirebaseAuth.getInstance().currentUser!!.uid
+
+
+
 
     init {
         checkPermissionLiveData.value = false
@@ -63,7 +59,7 @@ class PostViewModel :ViewModel(){
 
 
 
-    fun modifyImage(imageView : ImageView){
+    private fun modifyImage(imageView : ImageView){
 
         bitmap = (imageView.drawable as BitmapDrawable).bitmap
         resizedImage = resizeBitmap(bitmap, maxLength)
@@ -72,7 +68,7 @@ class PostViewModel :ViewModel(){
 
     }
 
-    fun resizeBitmap(source: Bitmap, maxLength: Int): Bitmap {
+    private fun resizeBitmap(source: Bitmap, maxLength: Int): Bitmap {
         try {
             if (source.height >= source.width) {
                 if (source.height <= maxLength) { // if image height already smaller than the required height
@@ -81,10 +77,9 @@ class PostViewModel :ViewModel(){
 
                 aspectRatio = source.width.toDouble() / source.height.toDouble()
                 targetWidth = (maxLength * aspectRatio).toInt()
-                _resultLiveData.value = Bitmap.createScaledBitmap(source, targetWidth, maxLength, false)
 
 
-                return resultLiveData.value!!
+                return Bitmap.createScaledBitmap(source, targetWidth, maxLength, false)
             } else {
                 if (source.width <= maxLength) { // if image width already smaller than the required width
                     return source
@@ -93,29 +88,50 @@ class PostViewModel :ViewModel(){
                 aspectRatio = source.height.toDouble() / source.width.toDouble()
                 targetHeight = (maxLength * aspectRatio).toInt()
 
-                _resultLiveData.value = Bitmap.createScaledBitmap(source, maxLength, targetHeight, false)
-                return resultLiveData.value!!
+                return Bitmap.createScaledBitmap(source, maxLength, targetHeight, false)
             }
         } catch (e: Exception) {
             return source
         }
     }
 
-    fun uploadImageToStorage(bitmap: Bitmap){
+
+
+    fun onAddPost(imageView: ImageView){
+
         val myFirebaseStorage = MyFirebaseStorage(
                 "Post",
                 FirebaseAuth.getInstance().currentUser!!.uid,
-                "Title",
-                bitmap)
-        viewModelScope.launch (Dispatchers.Main) {
-            myFirebaseStorage.uploadImageInStorage()
-            _isImageUploaded.value = true
-        }
+                title = titleLiveData.value!!)
 
-        _isImageUploaded.value = false
+        modifyImage(imageView)
+
+        val data = convertToBytes(resizedImage)
+
+        viewModelScope.launch {
+            myFirebaseStorage.uploadImageOnStorage(data)
+            var uri = myFirebaseStorage.getImageUri()
+            var post = Post(owner = currentUser,
+                    title = titleLiveData.value.toString()
+                    ,description = descriptionLiveData.value.toString()
+                    ,photo = uri)
+            insertPostToDb(post)
+        }
+    }
+    private suspend fun insertPostToDb(post:Post){
+        try {
+            viewModelScope.launch{
+                _db.insertPost(post)
+            }
+        }catch (e: FirebaseAuthException){
+            Log.w(TAG, e)
+        }
     }
 
-
+    private fun convertToBytes(bitmap:Bitmap): ByteArray{
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        return baos.toByteArray()
+    }
 
 
     enum class AuthenticationState {

@@ -5,4 +5,4 @@ data class User(
         val lastName:String? = null,
         val email:String,
         val photo:String? = null,
-        val idsOfPosts : List<Int>? = null)
+        val idsOfPosts : List<String> = emptyList())

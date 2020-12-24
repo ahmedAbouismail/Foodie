@@ -1,12 +1,9 @@
 package de.abou.foodie.screens.title
 
 import android.Manifest
-import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -20,8 +17,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import de.abou.foodie.R
+import de.abou.foodie.database.MyFirestore
 import de.abou.foodie.databinding.PostFragmentBinding
-import kotlin.math.log
+import kotlinx.coroutines.*
 
 
 class PostFragment : Fragment() {
@@ -47,69 +45,52 @@ class PostFragment : Fragment() {
                 container, false
         )
 
-        viewModel = ViewModelProvider(this).get(PostViewModel::class.java)
+        val application = requireNotNull(this.activity).application
+        val dataSource = MyFirestore()
+        val viewModelFactory = PostViewModelFactory(dataSource, application)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(PostViewModel::class.java)
 
         observeAuthenticationState()
 
 
-        viewModel.imageUrlLiveData.observe(viewLifecycleOwner, Observer {
-            binding.addPostImageBtn.setImageURI(viewModel.imageUrlLiveData.value)
-        })
 
-        binding.addPostImageBtn.setOnClickListener{
-            Toast.makeText(activity, "Image cilcked", Toast.LENGTH_SHORT).show()
-            Log.e(TAG, viewModel.checkPermissionLiveData.value.toString() + "before")
-            viewModel.checkPermissionLiveData.observe(viewLifecycleOwner, Observer {it
-                Log.e(TAG, it.toString() + "after")
-                when{
-                    it-> {
-                        permissionGranted()
-                        openGalleryForImage()
-                    }
-                    else->{
-                        requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),REQUEST_CODE)
-                    }
-                }
-            })
-        }
-
+        binding.lifecycleOwner = this
+        binding.postViewModel = viewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
-        binding.addPostBtn.setOnClickListener {
-            if(binding.addPostImageBtn.drawable != null){
-                viewModel.modifyImage(binding.addPostImageBtn)
-            }else{
-                Toast.makeText(activity, "Please upload image of product first", Toast.LENGTH_SHORT).show()
-            }
-
-
-            viewModel.resultLiveData.observe(viewLifecycleOwner, Observer {result->
-                viewModel.uploadImageToStorage(result)
-                binding.addPostImageBtn.setImageBitmap(result)
-            })
-
-            viewModel.isImageUploaded.observe(viewLifecycleOwner, Observer {isUploaded->
-                when{
-                    isUploaded->binding.addPostBtn.isEnabled = true
-                    else->{
-                        binding.addPostBtn.isEnabled = false
-                    }
-                }
-            })
-            Toast.makeText(activity, "Post Cilcked", Toast.LENGTH_SHORT).show()
+        binding.addPostImageBtn.setOnClickListener{
+            checkPermission()
         }
+    }
+
+    private fun checkPermission() {
+        viewModel.checkPermissionLiveData.observe(viewLifecycleOwner, Observer {it
+            when{
+                it-> {
+                    permissionGranted()
+                    openGalleryForImage()
+                }
+                else->{
+                    requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),REQUEST_CODE)
+                }
+            }
+        })
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        binding.addPostImageBtn.setBackgroundResource(R.drawable.ic_add_photo_post_70)
         viewModel.imageUrlLiveData.value = data?.data
+        binding.addPostImageBtn.setImageURI(data?.data)
+        if (data?.data != null){
+            binding.addPostImageBtn.setBackgroundResource(0)
+        }
 
     }
     private fun permissionGranted() = ContextCompat.checkSelfPermission(
@@ -124,7 +105,6 @@ class PostFragment : Fragment() {
             if (permissions[0]  == Manifest.permission.READ_EXTERNAL_STORAGE &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 viewModel.checkPermissionLiveData.value = true
-                openGalleryForImage()
             }
         }
     }
