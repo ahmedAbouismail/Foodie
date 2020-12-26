@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/signInFragment">
+    app:startDestination="@id/postListFragment">
 
     <fragment
         android:id="@+id/postListFragment"
@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_postFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_postListFragment_to_postFragment"
+            app:destination="@id/postFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -22,8 +25,8 @@
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
         <action
-            android:id="@+id/action_signInFragment_to_postFragment"
-            app:destination="@id/postFragment" />
+            android:id="@+id/action_signInFragment_to_postListFragment"
+            app:destination="@id/postListFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -33,6 +36,9 @@
         <action
             android:id="@+id/action_signUpFragment_to_postFragment"
             app:destination="@id/postListFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
     </fragment>
     <fragment
         android:id="@+id/postFragment"
@@ -40,7 +46,7 @@
         android:label="post_fragment"
         tools:layout="@layout/post_fragment" >
         <action
-            android:id="@+id/action_postFragment_to_signInFragment2"
+            android:id="@+id/action_postFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
     </fragment>
 </navigation>

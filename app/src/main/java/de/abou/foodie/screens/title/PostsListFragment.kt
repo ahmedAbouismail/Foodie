@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import de.abou.foodie.R
+import de.abou.foodie.database.MyFirestore
 import de.abou.foodie.databinding.PostsListFragmentBinding
 
 
@@ -19,6 +20,7 @@ class PostsListFragment : Fragment() {
     private lateinit var viewModel: PostsListViewModel
 
     private lateinit var binding : PostsListFragmentBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,11 +29,23 @@ class PostsListFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(PostsListViewModel::class.java)
 
 
+
         binding = DataBindingUtil.inflate<PostsListFragmentBinding>(
             inflater,
             R.layout.posts_list_fragment,
             container, false
         )
+
+        val adapter = PostAdapter()
+        binding.postList.adapter = adapter
+
+        observeAuthenticationState()
+
+        viewModel.posts.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
 
         // Inflate the layout for this fragment
         return binding.root
@@ -40,9 +54,21 @@ class PostsListFragment : Fragment() {
 
 
 
+
+
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeAuthenticationState()
+        binding.addPostBtn.setOnClickListener{
+            moveToPostForm()
+        }
+    }
+
+    private fun moveToPostForm() {
+        val action = PostsListFragmentDirections.actionPostListFragmentToPostFragment()
+        NavHostFragment.findNavController(this).navigate(action)
     }
 
     private fun observeAuthenticationState() {

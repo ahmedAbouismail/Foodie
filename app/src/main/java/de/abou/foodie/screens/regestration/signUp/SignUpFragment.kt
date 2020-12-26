@@ -1,5 +1,6 @@
   package de.abou.foodie.screens.regestration.signUp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,12 +12,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import de.abou.foodie.R
-import de.abou.foodie.databinding.SignInFragmentBinding
 import de.abou.foodie.databinding.SignUpFragmentBinding
-import de.abou.foodie.screens.regestration.signIn.SignInFragmentDirections
-import de.abou.foodie.screens.regestration.signIn.SignInViewModel
 
-class SignUpFragment : Fragment() {
+  class SignUpFragment : Fragment() {
 
 
     private lateinit var viewModel: SignUpViewModel
@@ -39,23 +37,39 @@ class SignUpFragment : Fragment() {
         binding.signUpViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        signUp()
+
 
         return binding.root
     }
 
-    private fun signUp() {
-        val action = SignUpFragmentDirections.actionSignUpFragmentToPostFragment()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        viewModel.eventSignIn.observe(viewLifecycleOwner, Observer { hasSignedIn ->
-            if (hasSignedIn) {
-                Toast.makeText(activity, "Authentication succeed.",
-                    Toast.LENGTH_SHORT).show()
-                NavHostFragment.findNavController(this).navigate(action)
-            } else {
-                Toast.makeText(activity, "Authentication failed.",
-                    Toast.LENGTH_SHORT).show()
+        viewModel.eventSignUp.observe(viewLifecycleOwner, Observer { signedUp->
+            when{
+                signedUp -> moveToPost()
+                else->{
+                    moveToSignIn()
+                }
             }
         })
+
     }
+
+      private fun showError() {
+          Toast.makeText(activity, "Authentication failed.",
+                  Toast.LENGTH_SHORT).show()
+      }
+
+      private fun moveToPost() {
+          Toast.makeText(activity, "User created", Toast.LENGTH_SHORT).show()
+          val action = SignUpFragmentDirections.actionSignUpFragmentToPostFragment()
+          NavHostFragment.findNavController(this).navigate(action)
+      }
+
+      private fun moveToSignIn(){
+          Toast.makeText(activity, "Email already exists please sign in", Toast.LENGTH_SHORT).show()
+          val action = SignUpFragmentDirections.actionSignUpFragmentToSignInFragment()
+          NavHostFragment.findNavController(this).navigate(action)
+      }
 }

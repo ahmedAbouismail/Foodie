@@ -32,7 +32,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@={signInViewModel.email}"/>
 
         <EditText
             android:id="@+id/signInPassword"
@@ -46,7 +47,8 @@
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signInEmail" />
+            app:layout_constraintTop_toBottomOf="@+id/signInEmail"
+            android:text="@={signInViewModel.password}"/>
 
         <Button
             android:id="@+id/signInButton"
@@ -56,7 +58,7 @@
             android:layout_marginTop="@dimen/signInMerge"
             android:layout_marginEnd="@dimen/signInMerge"
             android:text="@string/signIn"
-            android:onClick="@{() -> signInViewModel.onSignIn(signInEmail.getText().toString(), signInPassword.getText().toString())}"
+            android:onClick="@{() -> signInViewModel.onSignIn()}"
             android:background="@android:color/background_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

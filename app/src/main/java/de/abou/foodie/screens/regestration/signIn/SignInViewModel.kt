@@ -22,6 +22,8 @@ class SignInViewModel():ViewModel() {
         const val SIGN_IN_RESULT_CODE = 1001
     }
 
+    var email = MutableLiveData<String>()
+    var password = MutableLiveData<String>()
 
     private var auth: FirebaseAuth = Firebase.auth
 
@@ -30,8 +32,8 @@ class SignInViewModel():ViewModel() {
     val eventSignIn : LiveData<Boolean>
     get() = _eventSignIn
 
-     fun onSignIn(email : String, password: String){
-        auth.signInWithEmailAndPassword(email, password)
+     fun onSignIn(){
+        auth.signInWithEmailAndPassword(email.value!!, password.value!!)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful){
                         Log.d(TAG, "signInWithEmail:success")
@@ -41,7 +43,6 @@ class SignInViewModel():ViewModel() {
                         _eventSignIn.value = false
                     }
                 }
-
     }
 
     enum class AuthenticationState {

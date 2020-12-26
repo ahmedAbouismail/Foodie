@@ -65,6 +65,8 @@ class PostFragment : Fragment() {
         binding.addPostImageBtn.setOnClickListener{
             checkPermission()
         }
+
+
     }
 
     private fun checkPermission() {
@@ -121,7 +123,7 @@ class PostFragment : Fragment() {
 
 
     private fun observeAuthenticationState() {
-        val action =PostFragmentDirections.actionPostFragmentToSignInFragment2()
+        val action =PostFragmentDirections.actionPostFragmentToSignInFragment()
         viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when(authenticationState){
                 PostViewModel.AuthenticationState.UNAUTHENTICATED->{

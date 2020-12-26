@@ -14,9 +14,6 @@ import androidx.navigation.fragment.NavHostFragment
 
 import de.abou.foodie.R
 import de.abou.foodie.databinding.SignInFragmentBinding
-import de.abou.foodie.screens.regestration.signUp.SignUpFragmentDirections
-import de.abou.foodie.screens.title.PostsListFragmentDirections
-import de.abou.foodie.screens.title.PostsListViewModel
 
 
 class SignInFragment : Fragment() {
@@ -42,20 +39,34 @@ class SignInFragment : Fragment() {
         binding.signInViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        observeAuthenticationState()
 
-        signIn()
+
+
+
 
         return binding.root
     }
 
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeAuthenticationState()
+
+        viewModel.eventSignIn.observe(viewLifecycleOwner, Observer { signedIn->
+            when{
+                signedIn -> moveToPost()
+                else->{
+                    Toast.makeText(activity, "Please sign up", Toast.LENGTH_SHORT).show()
+                    moveToSignUp()
+                }
+            }
+
+        })
     }
 
     private fun observeAuthenticationState() {
-        val action = SignInFragmentDirections.actionSignInFragmentToPostFragment()
+        val action = SignInFragmentDirections.actionSignInFragmentToPostListFragment()
         viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when(authenticationState){
                 SignInViewModel.AuthenticationState.AUTHENTICATED->{
@@ -68,21 +79,15 @@ class SignInFragment : Fragment() {
         })
     }
 
-    private fun signIn() {
-        //val actionToPost = SignInFragmentDirections.actionSignInFragmentToPostFragment()
-        val actionToPost = SignInFragmentDirections.actionSignInFragmentToPostFragment()
+    private fun moveToSignUp() {
         val actionToSignUp = SignInFragmentDirections.actionSignInFragmentToSignUpFragment()
-        viewModel.eventSignIn.observe(viewLifecycleOwner, Observer { hasSignedIn ->
-            if (hasSignedIn) {
-                Toast.makeText(activity, "Authentication succeed.",
-                        Toast.LENGTH_SHORT).show()
-                NavHostFragment.findNavController(this).navigate(actionToPost)
-            } else {
-                Toast.makeText(activity, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
-                NavHostFragment.findNavController(this).navigate(actionToSignUp)
-            }
-        })
+        NavHostFragment.findNavController(this).navigate(actionToSignUp)
+    }
+
+    private fun moveToPost() {
+
+        val actionToPost = SignInFragmentDirections.actionSignInFragmentToPostListFragment()
+        NavHostFragment.findNavController(this).navigate(actionToPost)
     }
 
 }

@@ -17,14 +17,14 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/signUpBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:text="Sign Up"
-            android:onClick="@{()-> signUpViewModel.onSignUp(signUpEmail.getText().toString(), signUpPassword.getText().toString())}"
+            android:onClick="@{()-> signUpViewModel.createUser()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -41,7 +41,8 @@
             android:inputType="textEmailAddress"
             app:layout_constraintBottom_toTopOf="@+id/signUpPassword"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@={signUpViewModel.email}"/>
 
         <EditText
             android:id="@+id/signUpPassword"
@@ -49,11 +50,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="276dp"
+            android:layout_marginBottom="16dp"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            android:text="@={signUpViewModel.password}"
+            app:layout_constraintBottom_toTopOf="@+id/signUpBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent" />
@@ -63,15 +65,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:ems="10"
             android:hint="@string/FirstNameSignUp"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName5"
+            android:text="@={signUpViewModel.firstName}"
+            app:layout_constraintBottom_toTopOf="@+id/LastNameSignUp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/LastNameSignUp"
@@ -85,7 +90,8 @@
             android:inputType="textPersonName"
             app:layout_constraintBottom_toTopOf="@+id/signUpEmail"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@={signUpViewModel.lastName}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
