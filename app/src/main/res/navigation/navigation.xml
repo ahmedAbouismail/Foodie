@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/postListFragment">
+    app:startDestination="@id/myPostsFragment">
 
     <fragment
         android:id="@+id/postListFragment"
@@ -49,4 +49,14 @@
             android:id="@+id/action_postFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/myPostsFragment"
+        android:name="de.abou.foodie.screens.title.MyPostsFragment"
+        android:label="my_posts_fragment"
+        tools:layout="@layout/my_posts_fragment" />
+    <fragment
+        android:id="@+id/myProfileFragment2"
+        android:name="de.abou.foodie.drawer.MyProfileFragment"
+        android:label="fragment_my_profile"
+        tools:layout="@layout/fragment_my_profile" />
 </navigation>

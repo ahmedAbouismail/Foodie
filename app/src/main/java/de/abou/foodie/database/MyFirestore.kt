@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.toObjects
+import com.google.protobuf.Empty
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 
@@ -84,7 +85,21 @@ class MyFirestore {
 
         return liveData
     }
+    suspend fun getPostsByUserId(userId:String):List<Post>{
+        return try {
+            withContext(Dispatchers.IO){
+                _Firestore.collection(Constants.POSTS)
+                        .whereEqualTo("owner", userId)
+                        .get().await().toObjects<Post>()
+            }
+        }catch (e:FirebaseFirestoreException){
+            Log.w(TAG, e)
 
+            return emptyList()
+        }
+
+
+    }
 
 
     private fun getCurrentUserId():String{

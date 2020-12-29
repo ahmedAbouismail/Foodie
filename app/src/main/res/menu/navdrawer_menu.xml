@@ -10,4 +10,7 @@
         android:id="@+id/signOutFragment"
         android:icon="@drawable/ic_sign_out_drawer_24"
         android:title="@string/sign_out_drawer" />
+    <item
+        android:id="@+id/my_posts"
+        android:title="My Posts"/>
 </menu>
