@@ -29,6 +29,7 @@ class SignInFragment : Fragment() {
 
         //Init for the lateinit var
         viewModel = ViewModelProvider(this).get(SignInViewModel::class.java)
+
         binding = DataBindingUtil.inflate<SignInFragmentBinding>(
                 inflater,
                 R.layout.sign_in_fragment,
@@ -42,9 +43,6 @@ class SignInFragment : Fragment() {
         observeAuthenticationState()
 
 
-
-
-
         return binding.root
     }
 
@@ -52,7 +50,6 @@ class SignInFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.eventSignIn.observe(viewLifecycleOwner, Observer { signedIn->
             when{
                 signedIn -> moveToPost()
@@ -61,7 +58,6 @@ class SignInFragment : Fragment() {
                     moveToSignUp()
                 }
             }
-
         })
     }
 

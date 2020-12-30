@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_postListFragment_to_postFragment"
             app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_postListFragment_to_postInfoFragment"
+            app:destination="@id/postInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -53,10 +56,27 @@
         android:id="@+id/myPostsFragment"
         android:name="de.abou.foodie.screens.title.MyPostsFragment"
         android:label="my_posts_fragment"
-        tools:layout="@layout/my_posts_fragment" />
+        tools:layout="@layout/my_posts_fragment" >
+        <action
+            android:id="@+id/action_myPostsFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_myPostsFragment_to_postInfoFragment"
+            app:destination="@id/postInfoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myProfileFragment2"
         android:name="de.abou.foodie.drawer.MyProfileFragment"
         android:label="fragment_my_profile"
         tools:layout="@layout/fragment_my_profile" />
+    <fragment
+        android:id="@+id/signOutFragment2"
+        android:name="de.abou.foodie.screens.regestration.Signout.SignOutFragment"
+        android:label="fragment_signout"
+        tools:layout="@layout/fragment_signout" />
+    <fragment
+        android:id="@+id/postInfoFragment"
+        android:name="de.abou.foodie.screens.title.PostInfoFragment"
+        android:label="post_info_fragment"
+        tools:layout="@layout/post_info_fragment" />
 </navigation>

@@ -16,6 +16,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import de.abou.foodie.R
 import de.abou.foodie.database.MyFirestore
 import de.abou.foodie.databinding.PostFragmentBinding
@@ -65,7 +66,6 @@ class PostFragment : Fragment() {
         binding.addPostImageBtn.setOnClickListener{
             checkPermission()
         }
-
 
     }
 

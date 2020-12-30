@@ -47,7 +47,6 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
     private  var _db = MyFirestore()
 
     private var _postIdLiveData = MutableLiveData<String>()
-    val postIdLiveData : LiveData<String>
     get() = _postIdLiveData
 
     private var currentUser = FirebaseAuth.getInstance().currentUser!!.uid
@@ -58,8 +57,6 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
     init {
         checkPermissionLiveData.value = false
     }
-
-
 
 
     private fun modifyImage(imageView : ImageView){

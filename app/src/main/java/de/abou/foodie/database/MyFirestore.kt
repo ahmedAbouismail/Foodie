@@ -7,8 +7,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.protobuf.Empty
+import com.squareup.okhttp.Dispatcher
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 
@@ -84,6 +86,35 @@ class MyFirestore {
          }
 
         return liveData
+    }
+    fun getPostsOfOthers():LiveData<List<Post>>{
+        var liveData = MutableLiveData<List<Post>>()
+
+        _Firestore.collection(Constants.POSTS)
+            .whereNotEqualTo("owner", getCurrentUserId())
+            .get().addOnSuccessListener { result->
+            liveData.value = result.toObjects<Post>()
+
+
+        } .addOnFailureListener { exception ->
+            Log.d(TAG, "Error getting documents: ", exception)
+        }
+
+        return liveData
+    }
+    suspend fun getUserByUserId(userId:String): User?{
+        return try {
+            withContext(Dispatchers.IO){
+                _Firestore.collection(Constants.USERS)
+                    .document(getCurrentUserId())
+                    .get().await().toObject<User>()
+
+            }
+        }catch (e:FirebaseFirestoreException) {
+            Log.w(TAG, e)
+
+            return User("","","","",)
+        }
     }
     suspend fun getPostsByUserId(userId:String):List<Post>{
         return try {

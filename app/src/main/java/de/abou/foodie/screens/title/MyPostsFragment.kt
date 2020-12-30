@@ -1,20 +1,26 @@
 package de.abou.foodie.screens.title
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import de.abou.foodie.R
+import de.abou.foodie.database.Post
 import de.abou.foodie.databinding.MyPostsFragmentBinding
 import de.abou.foodie.databinding.PostsListFragmentBinding
 
-class MyPostsFragment : Fragment() {
+class MyPostsFragment : Fragment(), CellClickListener {
 
     private lateinit var viewModel: MyPostsViewModel
 
     private lateinit var binding : PostsListFragmentBinding
+    private val postInfoViewModel : PostInfoViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -30,7 +36,7 @@ class MyPostsFragment : Fragment() {
                 container, false
         )
 
-        val adapter = PostAdapter()
+        val adapter = PostAdapter(this)
         binding.postList.adapter = adapter
 
 
@@ -48,6 +54,18 @@ class MyPostsFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.navdrawer_menu, menu)
+    }
+
+
+
+    override fun onCellClickListener(data: Post) {
+        postInfoViewModel.postIdLiveData.value = data.postId
+        postInfoViewModel.titleLiveData.value = data.title
+        postInfoViewModel.descriptionLiveData.value = data.description
+        postInfoViewModel.imageLiveData.value = Uri.parse(data.photo)
+        var action = MyPostsFragmentDirections.actionMyPostsFragmentToPostInfoFragment()
+        NavHostFragment.findNavController(this).navigate(action)
+        Toast.makeText(context,data.postId, Toast.LENGTH_SHORT).show()
     }
 
 

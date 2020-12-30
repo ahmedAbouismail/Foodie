@@ -15,7 +15,7 @@ class PostsListViewModel:ViewModel() {
 
 
 
-    val posts = _db.getAllPosts()
+    val posts = _db.getPostsOfOthers()
 
     enum class AuthenticationState {
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
