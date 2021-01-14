@@ -2,13 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".screens.title.PostInfoFragment">
-
+    tools:context=".screens.postInfo.PostInfoFragment">
 
     <data>
         <variable
-            name="post"
-            type="de.abou.foodie.screens.title.PostInfoViewModel"/>
+            name="viewModel"
+            type="de.abou.foodie.screens.postInfo.PostInfoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +22,8 @@
             app:layout_constraintBottom_toTopOf="@+id/postInfoTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:clickable="true"/>
 
         <TextView
             android:id="@+id/postInfoTitle"
@@ -32,7 +32,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toTopOf="@+id/postInfoDescription"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            android:inputType="text"
+            android:text="@={viewModel.titleLiveData}"/>
 
 
         <TextView
@@ -43,18 +45,35 @@
             android:layout_marginBottom="300dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:inputType=""
-            android:editable="false"/>
+            android:inputType="text"
+            android:text="@={viewModel.descriptionLiveData}"/>
 
-        <Switch
-            android:id="@+id/postInfoSwitch"
+
+        <EditText
+            android:id="@+id/ownerPostTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="89dp"
-            android:text="Subscribe"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="@={viewModel.titleLiveData}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postInfoDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/postInfoImage"
+            android:visibility="invisible" />
+
+        <EditText
+            android:id="@+id/ownerPostDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="@={viewModel.descriptionLiveData}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/postInfoDescription"
+            android:visibility="invisible"/>
 
         <Button
             android:id="@+id/editBtn"
@@ -65,32 +84,31 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            android:onClick="@{()->viewModel.onEditClick(postInfoImage)}"/>
 
-        <EditText
-            android:id="@+id/ownerPostTitle"
+        <Switch
+            android:id="@+id/subscribe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:ems="10"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="128dp"
+            android:text="Subscribe"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postInfoImage"
-            android:visibility="invisible"/>
+            android:onClick="@{()->viewModel.onSwitchClick()}"/>
 
-        <EditText
-            android:id="@+id/ownerPostDescription"
+        <Button
+            android:id="@+id/deleteBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:ems="10"
-            android:inputType="text"
+            android:text="Delete"
+            app:layout_constraintBottom_toTopOf="@+id/editBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postInfoDescription"
-            android:visibility="invisible"/>
-
+            app:layout_constraintTop_toBottomOf="@+id/ownerPostDescription"
+            android:visibility="invisible"
+            android:onClick="@{()-> viewModel.onClickDelete()}"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

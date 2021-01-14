@@ -9,6 +9,7 @@ data class Post(
         var owner:String = "",
         var title:String = "",
         var photo:String = "",
+        var imageRef:String = "",
         var description: String = "",
         var subscribe:Boolean = false,
-        var idsOfSubscribers: List<Int> = emptyList())
+        var idsOfSubscribers: MutableList<String> = mutableListOf())

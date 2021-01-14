@@ -1,27 +1,29 @@
-package de.abou.foodie.screens.title
+package de.abou.foodie.screens.home
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import de.abou.foodie.FirebaseUserLiveData
 import de.abou.foodie.database.MyFirestore
-import kotlinx.coroutines.launch
+import de.abou.foodie.database.Post
+import java.lang.NullPointerException
 
 class PostsListViewModel:ViewModel() {
 
 
-    private val _db = MyFirestore()
+    private var _db : MyFirestore = MyFirestore()
 
-
-
-    val posts = _db.getPostsOfOthers()
+    lateinit var posts : LiveData<List<Post>>
 
     enum class AuthenticationState {
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
     }
 
     init {
+        try {
+            posts = _db.getPostsOfOthers()
+        }catch (e:NullPointerException){
+
+        }
         Log.i("PostViewModel","PostViewModel Created")
     }
     val authenticationState = FirebaseUserLiveData().map { user ->

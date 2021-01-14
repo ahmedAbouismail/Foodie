@@ -9,7 +9,7 @@
         <import type="android.view.View"/>
         <variable
             name="postViewModel"
-            type="de.abou.foodie.screens.title.PostViewModel" />
+            type="de.abou.foodie.screens.post.PostViewModel" />
     </data>
 
 
@@ -17,7 +17,7 @@
        android:id="@+id/postView"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       tools:context=".screens.title.PostFragment">
+       tools:context=".screens.post.PostFragment">
 
 
 
@@ -31,7 +31,6 @@
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent"
-
            android:background="@drawable/ic_add_photo_post_70"/>
 
 

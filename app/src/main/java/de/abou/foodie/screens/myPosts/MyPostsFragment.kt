@@ -1,4 +1,4 @@
-package de.abou.foodie.screens.title
+package de.abou.foodie.screens.myPosts
 
 import android.net.Uri
 import android.os.Bundle
@@ -12,8 +12,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import de.abou.foodie.R
 import de.abou.foodie.database.Post
-import de.abou.foodie.databinding.MyPostsFragmentBinding
 import de.abou.foodie.databinding.PostsListFragmentBinding
+import de.abou.foodie.screens.post.PostAdapter
+import de.abou.foodie.screens.home.CellClickListener
+import de.abou.foodie.screens.postInfo.PostInfoViewModel
 
 class MyPostsFragment : Fragment(), CellClickListener {
 
@@ -37,7 +39,7 @@ class MyPostsFragment : Fragment(), CellClickListener {
         )
 
         val adapter = PostAdapter(this)
-        binding.postList.adapter = adapter
+        binding.postsListFragment.adapter = adapter
 
 
 
@@ -47,6 +49,7 @@ class MyPostsFragment : Fragment(), CellClickListener {
             }
         })
 
+        binding.addPostBtn.visibility = View.INVISIBLE
         setHasOptionsMenu(true)
         return binding.root
     }
@@ -63,6 +66,8 @@ class MyPostsFragment : Fragment(), CellClickListener {
         postInfoViewModel.titleLiveData.value = data.title
         postInfoViewModel.descriptionLiveData.value = data.description
         postInfoViewModel.imageLiveData.value = Uri.parse(data.photo)
+        postInfoViewModel.imageRefLiveData.value = data.imageRef
+        postInfoViewModel.postOwnerLiveData.value = data.owner
         var action = MyPostsFragmentDirections.actionMyPostsFragmentToPostInfoFragment()
         NavHostFragment.findNavController(this).navigate(action)
         Toast.makeText(context,data.postId, Toast.LENGTH_SHORT).show()

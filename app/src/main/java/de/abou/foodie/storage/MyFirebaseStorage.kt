@@ -17,6 +17,7 @@ import com.google.firebase.storage.StorageException
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
+import com.google.firebase.storage.ktx.storageMetadata
 import com.google.type.Date
 import com.google.type.DateTime
 import de.abou.foodie.database.MyFirestore
@@ -33,20 +34,20 @@ import java.time.format.DateTimeFormatter
 import kotlin.coroutines.suspendCoroutine
 
 
-class MyFirebaseStorage(private val sort:String,
-                        private val userId:String,
-                        private val title:String) {
+class MyFirebaseStorage(private val ref :String = "") {
 
 
     companion object{
         const val TAG = "MyFireStorage"
     }
 
-    private val storage = Firebase.storage
+    val storage = Firebase.storage
 
 
     private lateinit var uploadTask : UploadTask.TaskSnapshot
-    private lateinit var storageRef : StorageReference
+    lateinit var storageRef : StorageReference
+
+    var metadata = storageMetadata { contentType = "image/jpeg" }
 //    private var baos = ByteArrayOutputStream()
 
 
@@ -59,9 +60,17 @@ class MyFirebaseStorage(private val sort:String,
 //    }
 
     suspend fun uploadImageOnStorage(data:ByteArray){
-        storageRef = storage.getReference("$sort//$userId//$title//${Timestamp.now()}.jpeg")
+//        storageRef = storage.getReference("$sort//$userId//$title//${Timestamp.now()}.jpeg")
+        storageRef = storage.getReference(ref)
         withContext(Dispatchers.IO){
-            uploadTask = storageRef.putBytes(data).await()
+            storageRef.putBytes(data,metadata).await()
+        }
+    }
+
+    suspend fun deleteImageFromStorage(imageRef:String){
+        withContext(Dispatchers.IO){
+            var ref = storage.getReference(imageRef)
+            ref.delete().await()
         }
     }
 

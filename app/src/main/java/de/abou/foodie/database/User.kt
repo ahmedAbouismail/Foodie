@@ -5,4 +5,5 @@ data class User(
         val lastName:String = "",
         val email:String = "",
         val photo:String = "",
-        val idsOfPosts : MutableList<String> = mutableListOf())
+        val idsOfPosts : MutableList<String> = mutableListOf(),
+        val idsOfSubscribedPosts : MutableList<String> = mutableListOf())

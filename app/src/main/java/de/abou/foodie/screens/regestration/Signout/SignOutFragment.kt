@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.auth.AuthUI
 import de.abou.foodie.R
 import de.abou.foodie.databinding.SignInFragmentBinding
+import de.abou.foodie.screens.regestration.signIn.SignInFragmentDirections
 
 
 class SignOutFragment : Fragment() {
@@ -36,22 +37,15 @@ class SignOutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeAuthenticationState()
+        moveToSignIn()
     }
-    private fun observeAuthenticationState() {
-//        val action = Sig.actionSignoutFragmentToSignInFragment()
-        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            when(authenticationState){
-                SignOutViewModel.AuthenticationState.AUTHENTICATED->{
-                    Toast.makeText(activity, "SignedIn", Toast.LENGTH_SHORT).show()
-                    Log.i("PostFragment", "Zpiiiiiiiiiiiiiiiii")
-                }else->{
-//                NavHostFragment.findNavController(this).navigate(action)
-                Log.i("PostFragment", "Tezzzzzzzzzz")
-            }
-            }
-
-        })
+    private fun moveToSignIn(){
+        val actionToSignUp = SignOutFragmentDirections.actionSignOutFragmentToSignInFragment()
+        NavHostFragment.findNavController(this).navigate(actionToSignUp)
+        signOut()
+    }
+    private fun signOut(){
+        AuthUI.getInstance().signOut(requireContext())
     }
 
 }

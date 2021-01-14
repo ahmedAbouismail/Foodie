@@ -1,17 +1,13 @@
-package de.abou.foodie.screens.title
+package de.abou.foodie.screens.post
 
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
-import de.abou.foodie.R
 import de.abou.foodie.database.Post
 import de.abou.foodie.databinding.PostItemViewBinding
+import de.abou.foodie.screens.home.CellClickListener
 
 
 class PostAdapter(private val cellClickListener: CellClickListener):androidx.recyclerview.widget.ListAdapter<Post, PostAdapter.ViewHolder>(PostDiffCallback()) {

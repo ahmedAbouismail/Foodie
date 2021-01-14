@@ -1,15 +1,16 @@
-package de.abou.foodie.screens.title
+package de.abou.foodie.screens.post
 
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
 import androidx.lifecycle.*
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import de.abou.foodie.FirebaseUserLiveData
+import de.abou.foodie.database.Constants
 import de.abou.foodie.database.MyFirestore
 import de.abou.foodie.database.Post
 import de.abou.foodie.storage.MyFirebaseStorage
@@ -26,7 +27,6 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
     }
 
 
-    val imageUrlLiveData = MutableLiveData<Uri>()
 
 
     val checkPermissionLiveData = MutableLiveData<Boolean>()
@@ -49,6 +49,9 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
     private var _postIdLiveData = MutableLiveData<String>()
     get() = _postIdLiveData
 
+    private var _updatePostLivedata = MutableLiveData<Boolean>()
+    val updatePostLivedata : LiveData<Boolean>
+    get() = _updatePostLivedata
     private var currentUser = FirebaseAuth.getInstance().currentUser!!.uid
 
 
@@ -99,21 +102,22 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
 
     fun onAddPost(imageView: ImageView){
 
-        val myFirebaseStorage = MyFirebaseStorage(
-                "Post",
-                FirebaseAuth.getInstance().currentUser!!.uid,
-                title = titleLiveData.value!!)
+        val ref = Constants.POSTS + "/"+ FirebaseAuth.getInstance().currentUser!!.uid + "/"+ titleLiveData.value!! + "/"+ Timestamp.now()
+        val myFirebaseStorage = MyFirebaseStorage(ref)
 
         modifyImage(imageView)
 
         val data = convertToBytes(resizedImage)
 
         viewModelScope.launch {
+
             myFirebaseStorage.uploadImageOnStorage(data)
+
             var uri = myFirebaseStorage.getImageUri()
             var post = Post(owner = currentUser,
                     title = titleLiveData.value.toString()
                     ,description = descriptionLiveData.value.toString()
+                    ,imageRef = ref
                     ,photo = uri)
             insertPostToDb(post)
         }
@@ -121,7 +125,7 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
     private suspend fun insertPostToDb(post:Post){
         try {
             viewModelScope.launch{
-                _db.insertPost(post)
+                _updatePostLivedata.value = _db.insertPost(post)
             }
         }catch (e: FirebaseAuthException){
             Log.w(TAG, e)

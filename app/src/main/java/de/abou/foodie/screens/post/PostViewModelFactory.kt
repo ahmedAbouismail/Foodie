@@ -1,4 +1,4 @@
-package de.abou.foodie.screens.title
+package de.abou.foodie.screens.post
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

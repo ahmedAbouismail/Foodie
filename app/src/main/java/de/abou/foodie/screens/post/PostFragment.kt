@@ -1,4 +1,4 @@
-package de.abou.foodie.screens.title
+package de.abou.foodie.screens.post
 
 import android.Manifest
 import android.content.ActivityNotFoundException
@@ -16,11 +16,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import de.abou.foodie.R
 import de.abou.foodie.database.MyFirestore
 import de.abou.foodie.databinding.PostFragmentBinding
-import kotlinx.coroutines.*
 
 
 class PostFragment : Fragment() {
@@ -67,6 +65,17 @@ class PostFragment : Fragment() {
             checkPermission()
         }
 
+        viewModel.updatePostLivedata.observe(viewLifecycleOwner, Observer {
+            var action = PostFragmentDirections.actionPostViewToMyPostsFragment()
+            when{
+                it->{
+                    NavHostFragment.findNavController(this).navigate(action)
+                    Toast.makeText(context, "Post added Successfully", Toast.LENGTH_SHORT)
+                }else->{
+                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT)
+                }
+            }
+        })
     }
 
     private fun checkPermission() {
@@ -77,7 +86,7 @@ class PostFragment : Fragment() {
                     openGalleryForImage()
                 }
                 else->{
-                    requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),REQUEST_CODE)
+                    requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_CODE)
                 }
             }
         })
@@ -88,7 +97,6 @@ class PostFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         binding.addPostImageBtn.setBackgroundResource(R.drawable.ic_add_photo_post_70)
-        viewModel.imageUrlLiveData.value = data?.data
         binding.addPostImageBtn.setImageURI(data?.data)
         if (data?.data != null){
             binding.addPostImageBtn.setBackgroundResource(0)
@@ -123,10 +131,10 @@ class PostFragment : Fragment() {
 
 
     private fun observeAuthenticationState() {
-        val action =PostFragmentDirections.actionPostFragmentToSignInFragment()
+        val action = PostFragmentDirections.actionPostViewToSignInFragment()
         viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when(authenticationState){
-                PostViewModel.AuthenticationState.UNAUTHENTICATED->{
+                PostViewModel.AuthenticationState.UNAUTHENTICATED ->{
                     NavHostFragment.findNavController(this).navigate(action)
                 }
             }

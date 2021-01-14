@@ -1,6 +1,5 @@
-package de.abou.foodie.screens.title
+package de.abou.foodie.screens.myPosts
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map

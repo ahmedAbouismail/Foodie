@@ -3,22 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/myPostsFragment">
+    app:startDestination="@id/postsListFragment">
 
     <fragment
-        android:id="@+id/postListFragment"
-        android:name="de.abou.foodie.screens.title.PostsListFragment"
+        android:id="@+id/postsListFragment"
+        android:name="de.abou.foodie.screens.home.PostsListFragment"
         android:label="fragment_posts"
         tools:layout="@layout/posts_list_fragment" >
+
+
+
         <action
-            android:id="@+id/action_postFragment_to_signInFragment"
+            android:id="@+id/action_postsListFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
         <action
-            android:id="@+id/action_postListFragment_to_postFragment"
-            app:destination="@id/postFragment" />
-        <action
-            android:id="@+id/action_postListFragment_to_postInfoFragment"
+            android:id="@+id/action_postsListFragment_to_postInfoFragment"
             app:destination="@id/postInfoFragment" />
+        <action
+            android:id="@+id/action_postsListFragment_to_postView"
+            app:destination="@id/postView" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -27,9 +30,10 @@
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+
         <action
-            android:id="@+id/action_signInFragment_to_postListFragment"
-            app:destination="@id/postListFragment" />
+            android:id="@+id/action_signInFragment_to_postsListFragment"
+            app:destination="@id/postsListFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -37,46 +41,62 @@
         android:label="sign_up_fragment"
         tools:layout="@layout/sign_up_fragment" >
         <action
-            android:id="@+id/action_signUpFragment_to_postFragment"
-            app:destination="@id/postListFragment" />
-        <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_postsListFragment"
+            app:destination="@id/postsListFragment" />
     </fragment>
     <fragment
-        android:id="@+id/postFragment"
-        android:name="de.abou.foodie.screens.title.PostFragment"
+        android:id="@+id/postView"
+        android:name="de.abou.foodie.screens.post.PostFragment"
         android:label="post_fragment"
         tools:layout="@layout/post_fragment" >
+
         <action
-            android:id="@+id/action_postFragment_to_signInFragment"
+            android:id="@+id/action_postView_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_postView_to_myPostsFragment"
+            app:destination="@id/myPostsFragment" />
     </fragment>
     <fragment
         android:id="@+id/myPostsFragment"
-        android:name="de.abou.foodie.screens.title.MyPostsFragment"
+        android:name="de.abou.foodie.screens.myPosts.MyPostsFragment"
         android:label="my_posts_fragment"
         tools:layout="@layout/my_posts_fragment" >
         <action
             android:id="@+id/action_myPostsFragment_to_postFragment"
-            app:destination="@id/postFragment" />
+            app:destination="@id/postView" />
         <action
             android:id="@+id/action_myPostsFragment_to_postInfoFragment"
             app:destination="@id/postInfoFragment" />
     </fragment>
     <fragment
-        android:id="@+id/myProfileFragment2"
+        android:id="@+id/myProfileFragment"
         android:name="de.abou.foodie.drawer.MyProfileFragment"
         android:label="fragment_my_profile"
-        tools:layout="@layout/fragment_my_profile" />
+        tools:layout="@layout/my_profile_fragment" />
     <fragment
-        android:id="@+id/signOutFragment2"
+        android:id="@+id/signOutFragment"
         android:name="de.abou.foodie.screens.regestration.Signout.SignOutFragment"
         android:label="fragment_signout"
-        tools:layout="@layout/fragment_signout" />
+        tools:layout="@layout/fragment_signout" >
+        <action
+            android:id="@+id/action_signOutFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
     <fragment
         android:id="@+id/postInfoFragment"
-        android:name="de.abou.foodie.screens.title.PostInfoFragment"
+        android:name="de.abou.foodie.screens.postInfo.PostInfoFragment"
         android:label="post_info_fragment"
-        tools:layout="@layout/post_info_fragment" />
+        tools:layout="@layout/post_info_fragment" >
+        <action
+            android:id="@+id/action_postInfoFragment_to_myPostsFragment"
+            app:destination="@id/myPostsFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="de.abou.foodie.screens.mainActivity.MainActivity"
+        android:label="MainActivity" />
 </navigation>

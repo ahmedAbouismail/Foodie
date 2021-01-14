@@ -27,6 +27,7 @@ import de.abou.foodie.databinding.SignUpFragmentBinding
         // Inflate the layout for this fragment
 
         viewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
+
         binding = DataBindingUtil.inflate<SignUpFragmentBinding>(
             inflater,
             R.layout.sign_up_fragment,
@@ -63,7 +64,7 @@ import de.abou.foodie.databinding.SignUpFragmentBinding
 
       private fun moveToPost() {
           Toast.makeText(activity, "User created", Toast.LENGTH_SHORT).show()
-          val action = SignUpFragmentDirections.actionSignUpFragmentToPostFragment()
+          val action = SignUpFragmentDirections.actionSignUpFragmentToPostsListFragment()
           NavHostFragment.findNavController(this).navigate(action)
       }
 

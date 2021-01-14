@@ -1,8 +1,8 @@
-package de.abou.foodie.screens.title
+package de.abou.foodie.screens.home
 
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,13 +13,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import com.squareup.picasso.Picasso
+import com.google.firebase.auth.FirebaseAuth
 import de.abou.foodie.R
-import de.abou.foodie.database.MyFirestore
 import de.abou.foodie.database.Post
-import de.abou.foodie.databinding.PostFragmentBinding
 import de.abou.foodie.databinding.PostsListFragmentBinding
+import de.abou.foodie.screens.post.PostAdapter
+import de.abou.foodie.screens.postInfo.PostInfoViewModel
 
 
 class PostsListFragment : Fragment(), CellClickListener {
@@ -35,7 +34,9 @@ class PostsListFragment : Fragment(), CellClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
+
         viewModel = ViewModelProvider(this).get(PostsListViewModel::class.java)
+        observeAuthenticationState()
 //        postViewModel = ViewModelProvider().get(PostViewModel::class.java)
 
         binding = DataBindingUtil.inflate<PostsListFragmentBinding>(
@@ -45,17 +46,7 @@ class PostsListFragment : Fragment(), CellClickListener {
         )
 
 
-        val adapter = PostAdapter(this)
-        binding.postList.adapter = adapter
 
-
-        observeAuthenticationState()
-
-        viewModel.posts.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                adapter.submitList(it)
-            }
-        })
 
         // Inflate the layout for this fragment
         return binding.root
@@ -71,15 +62,17 @@ class PostsListFragment : Fragment(), CellClickListener {
     }
 
     private fun moveToPostForm() {
-        val action = PostsListFragmentDirections.actionPostListFragmentToPostFragment()
+        val action = PostsListFragmentDirections.actionPostsListFragmentToPostView()
         NavHostFragment.findNavController(this).navigate(action)
     }
 
     private fun observeAuthenticationState() {
-        val action = PostsListFragmentDirections.actionPostFragmentToSignInFragment()
+        val action = PostsListFragmentDirections.actionPostsListFragmentToSignInFragment()
         viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when(authenticationState){
-                PostsListViewModel.AuthenticationState.AUTHENTICATED->{
+                PostsListViewModel.AuthenticationState.AUTHENTICATED ->{
+                    Log.i("7aa", "Autha")
+                    updateUI()
                     Toast.makeText(activity, "SignedIn", Toast.LENGTH_SHORT).show()
                 }else->{
                     NavHostFragment.findNavController(this).navigate(action)
@@ -88,12 +81,26 @@ class PostsListFragment : Fragment(), CellClickListener {
         })
     }
 
+    private fun updateUI(){
+        val adapter = PostAdapter(this)
+        binding.postsListFragment.adapter = adapter
+        viewModel.posts.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
+    }
     override fun onCellClickListener(data: Post) {
         postInfoViewModel.postIdLiveData.value = data.postId
         postInfoViewModel.titleLiveData.value = data.title
         postInfoViewModel.descriptionLiveData.value = data.description
         postInfoViewModel.imageLiveData.value =Uri.parse(data.photo)
-        var action = PostsListFragmentDirections.actionPostListFragmentToPostInfoFragment()
+        postInfoViewModel.imageRefLiveData.value = data.imageRef
+        if (data.owner == FirebaseAuth.getInstance().currentUser!!.uid){
+
+        }
+        postInfoViewModel.postOwnerLiveData.value = data.owner
+        var action = PostsListFragmentDirections.actionPostsListFragmentToPostInfoFragment()
         NavHostFragment.findNavController(this).navigate(action)
         Toast.makeText(context,data.postId, Toast.LENGTH_SHORT).show()
     }

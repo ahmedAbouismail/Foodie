@@ -40,7 +40,7 @@ class SignInFragment : Fragment() {
         binding.signInViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        observeAuthenticationState()
+//        observeAuthenticationState()
 
 
         return binding.root
@@ -52,7 +52,7 @@ class SignInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.eventSignIn.observe(viewLifecycleOwner, Observer { signedIn->
             when{
-                signedIn -> moveToPost()
+                signedIn -> moveToHome()
                 else->{
                     Toast.makeText(activity, "Please sign up", Toast.LENGTH_SHORT).show()
                     moveToSignUp()
@@ -61,28 +61,27 @@ class SignInFragment : Fragment() {
         })
     }
 
-    private fun observeAuthenticationState() {
-        val action = SignInFragmentDirections.actionSignInFragmentToPostListFragment()
-        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            when(authenticationState){
-                SignInViewModel.AuthenticationState.AUTHENTICATED->{
-                    NavHostFragment.findNavController(this).navigate(action)
-                    Toast.makeText(activity, "SignedIn", Toast.LENGTH_SHORT).show()
-                }else->{
-                Toast.makeText(activity, "Sign In please", Toast.LENGTH_SHORT).show()
-            }
-            }
-        })
-    }
+//    private fun observeAuthenticationState() {
+//        val action = SignInFragmentDirections.actionSignInFragmentToPostsListFragment()
+//        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+//            when(authenticationState){
+//                SignInViewModel.AuthenticationState.AUTHENTICATED->{
+//                    NavHostFragment.findNavController(this).navigate(action)
+//                    Toast.makeText(activity, "SignedIn", Toast.LENGTH_SHORT).show()
+//                }else->{
+//                Toast.makeText(activity, "Sign In please", Toast.LENGTH_SHORT).show()
+//            }
+//            }
+//        })
+//    }
 
     private fun moveToSignUp() {
         val actionToSignUp = SignInFragmentDirections.actionSignInFragmentToSignUpFragment()
         NavHostFragment.findNavController(this).navigate(actionToSignUp)
     }
 
-    private fun moveToPost() {
-
-        val actionToPost = SignInFragmentDirections.actionSignInFragmentToPostListFragment()
+    private fun moveToHome() {
+        val actionToPost = SignInFragmentDirections.actionSignInFragmentToPostsListFragment()
         NavHostFragment.findNavController(this).navigate(actionToPost)
     }
 
