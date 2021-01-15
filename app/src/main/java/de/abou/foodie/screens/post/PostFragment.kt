@@ -13,12 +13,24 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.findFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.RectangularBounds
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import de.abou.foodie.R
 import de.abou.foodie.database.MyFirestore
 import de.abou.foodie.databinding.PostFragmentBinding
+import de.abou.foodie.screens.MapsFragment
 
 
 class PostFragment : Fragment() {
@@ -51,8 +63,21 @@ class PostFragment : Fragment() {
 
         observeAuthenticationState()
 
+//        //Initialize the autocomplete google sdk
+//        Places.initialize(requireContext(), "AIzaSyD_UXLvad0frzugbqcC5sWrVKDZ7zY3g3Q")
+//        // Create a new PLaces Client instance
+//        var placesClient : PlacesClient = Places.createClient(requireContext())
+//
+//
+//        // Initialize the AutocompleteSupportFragment.
+//        val autocompleteFragment = fragmentManager?.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+//        // Specify the types of place data to return.
+//        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
 
-
+//        binding.address.setOnClickListener {
+//            var action = PostFragmentDirections.actionPostViewToMapsFragment()
+//            NavHostFragment.findNavController(this).navigate(action)
+//        }
         binding.lifecycleOwner = this
         binding.postViewModel = viewModel
         return binding.root
@@ -70,9 +95,9 @@ class PostFragment : Fragment() {
             when{
                 it->{
                     NavHostFragment.findNavController(this).navigate(action)
-                    Toast.makeText(context, "Post added Successfully", Toast.LENGTH_SHORT)
+                    Toast.makeText(context, "Post added Successfully", Toast.LENGTH_SHORT).show()
                 }else->{
-                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT)
+                Toast.makeText(context, "Please check the fields again", Toast.LENGTH_SHORT).show()
                 }
             }
         })

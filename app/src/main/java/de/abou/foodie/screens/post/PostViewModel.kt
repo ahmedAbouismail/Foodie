@@ -16,6 +16,7 @@ import de.abou.foodie.database.Post
 import de.abou.foodie.storage.MyFirebaseStorage
 import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
+import java.lang.IllegalArgumentException
 
 
 class PostViewModel(val database:MyFirestore,  application: Application) :AndroidViewModel(application){
@@ -101,26 +102,32 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
 
 
     fun onAddPost(imageView: ImageView){
+        try {
+            val ref = Constants.POSTS + "/"+ FirebaseAuth.getInstance().currentUser!!.uid + "/"+ titleLiveData.value!! + "/"+ Timestamp.now()
+            val myFirebaseStorage = MyFirebaseStorage(ref)
 
-        val ref = Constants.POSTS + "/"+ FirebaseAuth.getInstance().currentUser!!.uid + "/"+ titleLiveData.value!! + "/"+ Timestamp.now()
-        val myFirebaseStorage = MyFirebaseStorage(ref)
+            modifyImage(imageView)
 
-        modifyImage(imageView)
+            val data = convertToBytes(resizedImage)
 
-        val data = convertToBytes(resizedImage)
+            viewModelScope.launch {
 
-        viewModelScope.launch {
+                myFirebaseStorage.uploadImageOnStorage(data)
 
-            myFirebaseStorage.uploadImageOnStorage(data)
-
-            var uri = myFirebaseStorage.getImageUri()
-            var post = Post(owner = currentUser,
-                    title = titleLiveData.value.toString()
-                    ,description = descriptionLiveData.value.toString()
-                    ,imageRef = ref
-                    ,photo = uri)
-            insertPostToDb(post)
+                var uri = myFirebaseStorage.getImageUri()
+                var post = Post(owner = currentUser,
+                        title = titleLiveData.value.toString()
+                        ,description = descriptionLiveData.value.toString()
+                        ,imageRef = ref
+                        ,photo = uri)
+                insertPostToDb(post)
+            }
+        }catch (e: NullPointerException){
+            _updatePostLivedata.value = false
+        }catch (e: IllegalArgumentException){
+            _updatePostLivedata.value = false
         }
+
     }
     private suspend fun insertPostToDb(post:Post){
         try {

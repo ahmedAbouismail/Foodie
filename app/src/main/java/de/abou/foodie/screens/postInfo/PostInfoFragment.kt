@@ -68,8 +68,13 @@ class PostInfoFragment : Fragment(){
                 }
             }
 
-
+            for(id in it.idsOfSubscribedPosts){
+                binding.subscribe.isChecked = id == viewModel.postIdLiveData.value
+            }
         })
+
+//        binding.subscribe.setOnCheckedChangeListener { buttonView, isChecked -> viewModel.switchCheckedLiveData.value =
+//            isChecked }
 
         viewModel.updatePostLivedata.observe(viewLifecycleOwner, Observer {
             var action = PostInfoFragmentDirections.actionPostInfoFragmentToMyPostsFragment()
@@ -78,7 +83,7 @@ class PostInfoFragment : Fragment(){
                     NavHostFragment.findNavController(this).navigate(action)
                     viewModel.resetUpdateLivedate()
                 }else->{
-                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT)
+                    Toast.makeText(context, "Please fill the all fields", Toast.LENGTH_SHORT).show()
             }
             }
         })
@@ -93,15 +98,15 @@ class PostInfoFragment : Fragment(){
             }
             }
         })
-        viewModel.switchCheckedLiveData.observe(viewLifecycleOwner, Observer {
-            viewModel.onSwitchClick()
-            when{
-                it-> binding.subscribe.isChecked = true
-                else->{
-                    binding.subscribe.isChecked = false
-                }
-            }
-        })
+//        viewModel.switchCheckedLiveData.observe(viewLifecycleOwner, Observer {
+//            viewModel.onSwitchClick()
+//            when{
+//                it-> binding.subscribe.isChecked = true
+//                else->{
+//                    binding.subscribe.isChecked = false
+//                }
+//            }
+//        })
         viewModel.imageLiveData.observe(viewLifecycleOwner, Observer {
             Picasso.get().load(it).into(binding.postInfoImage);
 

@@ -50,12 +50,17 @@ class SignInFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.eventSignIn.observe(viewLifecycleOwner, Observer { signedIn->
-            when{
+        viewModel.eventSignIn.observe(viewLifecycleOwner, Observer { signedIn ->
+            when {
                 signedIn -> moveToHome()
-                else->{
-                    Toast.makeText(activity, "Please sign up", Toast.LENGTH_SHORT).show()
-                    moveToSignUp()
+                else -> {
+                    if (viewModel.email.value.isNullOrEmpty() || viewModel.password.value.isNullOrEmpty()) {
+                        Toast.makeText(context, "please fill the fields", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(activity, "Please sign up", Toast.LENGTH_SHORT).show()
+                        moveToSignUp()
+                    }
+
                 }
             }
         })

@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
+import android.widget.Switch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,7 @@ import de.abou.foodie.database.User
 import de.abou.foodie.storage.MyFirebaseStorage
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import java.lang.IllegalArgumentException
 
 class PostInfoViewModel:ViewModel() {
 
@@ -27,7 +29,7 @@ class PostInfoViewModel:ViewModel() {
     var descriptionLiveData = MutableLiveData<String>()
     var imageRefLiveData= MutableLiveData<String>()
     var imageLiveData = MutableLiveData<Uri>()
-    var postOwnerLiveData = MutableLiveData<String>()
+    var postOwnerIdLiveData = MutableLiveData<String>()
 
     var switchCheckedLiveData =  MutableLiveData<Boolean>()
     private val _userLiveData = MutableLiveData<User>()
@@ -43,6 +45,8 @@ class PostInfoViewModel:ViewModel() {
     val deleteLivedata : LiveData<Boolean>
     get() = _deleteLivedata
 
+    var ownerNameLiveData = MutableLiveData<String>()
+    var ownerEmailLiveData = MutableLiveData<String>()
 
     private val _db = MyFirestore()
     private lateinit var myFirebaseStorage : MyFirebaseStorage
@@ -59,8 +63,16 @@ class PostInfoViewModel:ViewModel() {
 
     init {
         getPosts()
-
+        getUserData()
         checkPermissionLiveData.value = false
+    }
+
+    private fun getUserData() {
+        viewModelScope.launch {
+            val user = _db.getUserByUserId(postOwnerIdLiveData.toString())
+            ownerEmailLiveData.value = user?.email.toString()
+            ownerNameLiveData.value = user?.firstName + " " + user?.lastName
+        }
     }
 
     private fun modifyImage(imageView : ImageView){
@@ -69,7 +81,6 @@ class PostInfoViewModel:ViewModel() {
         resizedImage = resizeBitmap(bitmap, maxLength)
 
         Log.e(TAG, imageView.id.toString())
-
     }
 
     private fun resizeBitmap(source: Bitmap, maxLength: Int): Bitmap {
@@ -111,18 +122,28 @@ class PostInfoViewModel:ViewModel() {
     }
 
     fun onEditClick(imageView: ImageView){
-        modifyImage(imageView = imageView)
+        try {
+            modifyImage(imageView = imageView)
 
-        var ref = imageRefLiveData.value
-        val data = convertToBytes(resizedImage)
-        Log.i(TAG, ref.toString())
-        myFirebaseStorage = MyFirebaseStorage(ref!!)
-        viewModelScope.launch {
-            myFirebaseStorage.uploadImageOnStorage(data)
-            var uri = myFirebaseStorage.getImageUri()
-
-            updatePost(titleLiveData.value.toString(), descriptionLiveData.value.toString(), uri)
+            var ref = imageRefLiveData.value
+            val data = convertToBytes(resizedImage)
+            Log.i(TAG, ref.toString())
+            myFirebaseStorage = MyFirebaseStorage(ref!!)
+            viewModelScope.launch {
+                myFirebaseStorage.uploadImageOnStorage(data)
+                var uri = myFirebaseStorage.getImageUri()
+                if (titleLiveData.value.toString().isNullOrEmpty()){
+                    _updatePostLivedata.value = false
+                }else{
+                    updatePost(titleLiveData.value.toString(), descriptionLiveData.value.toString(), uri)
+                }
+            }
+        }catch (e: NullPointerException){
+            _updatePostLivedata.value = false
+        }catch (e: IllegalArgumentException){
+            _updatePostLivedata.value = false
         }
+
     }
 
     private suspend fun updatePost(title:String, description:String, photo:String){
@@ -132,25 +153,26 @@ class PostInfoViewModel:ViewModel() {
     }
 
 
-    fun onSwitchClick(){
+    fun onSwitchClick(view: Switch){
         viewModelScope.launch {
-            addSubscriber()
-            addSubscribedPostToUser()
+            Log.i(TAG, view.isChecked.toString())
+            addSubscriber(view.isChecked)
+            addSubscribedPostToUser(view.isChecked)
         }
     }
 
-    private suspend fun addSubscriber(){
+    private suspend fun addSubscriber(checked:Boolean){
         viewModelScope.launch {
-            _db.addOrDeleteSubscriberToPost(postOwnerLiveData.value!!
+            _db.addOrDeleteSubscriberToPost(postOwnerIdLiveData.value!!
                     , postIdLiveData.value!!
-                    , getCurrentUser(), switchCheckedLiveData.value!!)
+                    , getCurrentUser(), checked)
         }
     }
 
-    private suspend fun addSubscribedPostToUser(){
+    private suspend fun addSubscribedPostToUser(checked:Boolean){
         viewModelScope.launch {
             _db.updateSubscribedPostsInUser(postIdLiveData.value!!
-                    , switchCheckedLiveData.value!!)
+                    ,checked)
         }
     }
 

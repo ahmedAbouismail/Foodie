@@ -2,20 +2,22 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-
+    <item
+        android:id="@+id/user_info"
+        android:icon="@drawable/ic_my_profile_drawer_24"
+        android:title="@string/my_profile_drawer" />
     <item
         android:id="@+id/postsListFragment"
-        android:title="Home"/>
+        android:title="Home"
+        android:icon="@drawable/ic_home_24"/>
 
+    <item
+        android:id="@+id/myPostsFragment"
+        android:title="My Posts"
+        android:icon="@drawable/ic_my_posts_24"/>
     <item
         android:id="@+id/signOutFragment"
         android:icon="@drawable/ic_sign_out_drawer_24"
         android:title="@string/sign_out_drawer" />
-    <item
-        android:id="@+id/myPostsFragment"
-        android:title="My Posts"/>
-    <item
-        android:id="@+id/myProfileFragment"
-        android:icon="@drawable/ic_my_profile_drawer_24"
-        android:title="@string/my_profile_drawer" />
+
 </menu>

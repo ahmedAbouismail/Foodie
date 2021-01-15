@@ -13,6 +13,9 @@ import de.abou.foodie.FirebaseUserLiveData
 import de.abou.foodie.database.MyFirestore
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.supervisorScope
+import java.lang.Exception
+import java.lang.IllegalArgumentException
+import java.lang.NullPointerException
 
 
 class SignInViewModel():ViewModel() {
@@ -33,16 +36,23 @@ class SignInViewModel():ViewModel() {
     get() = _eventSignIn
 
      fun onSignIn(){
-        auth.signInWithEmailAndPassword(email.value!!, password.value!!)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful){
-                        Log.d(TAG, "signInWithEmail:success")
-                        _eventSignIn.value = true
-                    }else{
-                        Log.w(TAG, "signInWithEmail:failure", task.exception)
-                        _eventSignIn.value = false
-                    }
-                }
+         try {
+             auth.signInWithEmailAndPassword(email.value!!, password.value!!)
+                     .addOnCompleteListener { task ->
+                         if (task.isSuccessful){
+                             Log.d(TAG, "signInWithEmail:success")
+                             _eventSignIn.value = true
+                         }else{
+                             Log.w(TAG, "signInWithEmail:failure", task.exception)
+                             _eventSignIn.value = false
+                         }
+                     }
+         }catch (e: IllegalArgumentException){
+             _eventSignIn.value = false
+         }catch (e: NullPointerException){
+             _eventSignIn.value = false
+         }
+
     }
 
     enum class AuthenticationState {

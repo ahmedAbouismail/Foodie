@@ -158,11 +158,11 @@ class MyFirestore {
             try {
                 if (checked) {
                     _Firestore.collection(Constants.POSTS)
-                            .document(postId)
-                            .update("idsOfSubscribers", FieldValue.arrayUnion(subscriberId)).await()
+                        .document(postId)
+                        .update("idsOfSubscribers", FieldValue.arrayUnion(subscriberId)).await()
                 } else {
                     _Firestore.collection(Constants.POSTS)
-                            .document(postId)
+                        .document(postId)
                             .update("idsOfSubscribers", FieldValue.arrayRemove(subscriberId)).await()
                 }
 
@@ -202,6 +202,21 @@ class MyFirestore {
             false
         }
 
+    }
+
+    suspend fun updateUser (firstName : String, lastName:String):Boolean{
+        return try {
+            withContext(Dispatchers.IO){
+                _Firestore.collection(Constants.USERS)
+                    .document(getCurrentUserId())
+                    .update(mapOf("firstName" to firstName,
+                    "lastName" to lastName)).await()
+                true
+            }
+        }catch (e: FirebaseFirestoreException){
+            Log.w(TAG, e)
+            false
+        }
     }
 
     fun getCurrentUserId(): String {

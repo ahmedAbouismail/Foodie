@@ -14,9 +14,7 @@ class PostsListViewModel:ViewModel() {
 
     lateinit var posts : LiveData<List<Post>>
 
-    enum class AuthenticationState {
-        AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
-    }
+
 
     init {
         try {
@@ -25,6 +23,10 @@ class PostsListViewModel:ViewModel() {
 
         }
         Log.i("PostViewModel","PostViewModel Created")
+    }
+
+    enum class AuthenticationState {
+        AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
     }
     val authenticationState = FirebaseUserLiveData().map { user ->
 

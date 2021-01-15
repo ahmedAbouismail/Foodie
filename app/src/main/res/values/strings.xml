@@ -27,5 +27,6 @@
     //Add PostLayout
     <string name="addImageContentDescription">Add Image</string>
     <string name="addPostTitleHint">Add Title</string>
+    <string name="addPostDescriptionHint">Add Description</string>
     <string name="addPostBtn">Add</string>
 </resources>

@@ -13,7 +13,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import com.google.firebase.auth.FirebaseAuth
 import de.abou.foodie.R
 import de.abou.foodie.database.Post
 import de.abou.foodie.databinding.PostsListFragmentBinding
@@ -96,10 +95,8 @@ class PostsListFragment : Fragment(), CellClickListener {
         postInfoViewModel.descriptionLiveData.value = data.description
         postInfoViewModel.imageLiveData.value =Uri.parse(data.photo)
         postInfoViewModel.imageRefLiveData.value = data.imageRef
-        if (data.owner == FirebaseAuth.getInstance().currentUser!!.uid){
-
-        }
-        postInfoViewModel.postOwnerLiveData.value = data.owner
+        postInfoViewModel.switchCheckedLiveData.value = data.subscribe
+        postInfoViewModel.postOwnerIdLiveData.value = data.owner
         var action = PostsListFragmentDirections.actionPostsListFragmentToPostInfoFragment()
         NavHostFragment.findNavController(this).navigate(action)
         Toast.makeText(context,data.postId, Toast.LENGTH_SHORT).show()

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/postsListFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/postsListFragment"
@@ -73,11 +73,6 @@
             app:destination="@id/postInfoFragment" />
     </fragment>
     <fragment
-        android:id="@+id/myProfileFragment"
-        android:name="de.abou.foodie.drawer.MyProfileFragment"
-        android:label="fragment_my_profile"
-        tools:layout="@layout/my_profile_fragment" />
-    <fragment
         android:id="@+id/signOutFragment"
         android:name="de.abou.foodie.screens.regestration.Signout.SignOutFragment"
         android:label="fragment_signout"
@@ -99,4 +94,25 @@
         android:id="@+id/mainActivity"
         android:name="de.abou.foodie.screens.mainActivity.MainActivity"
         android:label="MainActivity" />
+    <fragment
+        android:id="@+id/user_info"
+        android:name="de.abou.foodie.screens.userInfo.UserInfoFragment"
+        android:label="fragment_unser_info"
+        tools:layout="@layout/user_info_fragment" >
+        <action
+            android:id="@+id/action_user_info_to_postsListFragment"
+            app:destination="@id/postsListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="de.abou.foodie.screens.title.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_myPostsFragment"
+            app:destination="@id/myPostsFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
 </navigation>

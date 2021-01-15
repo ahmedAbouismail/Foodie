@@ -67,7 +67,8 @@ class MyPostsFragment : Fragment(), CellClickListener {
         postInfoViewModel.descriptionLiveData.value = data.description
         postInfoViewModel.imageLiveData.value = Uri.parse(data.photo)
         postInfoViewModel.imageRefLiveData.value = data.imageRef
-        postInfoViewModel.postOwnerLiveData.value = data.owner
+        postInfoViewModel.postOwnerIdLiveData.value = data.owner
+        postInfoViewModel.switchCheckedLiveData.value = data.subscribe
         var action = MyPostsFragmentDirections.actionMyPostsFragmentToPostInfoFragment()
         NavHostFragment.findNavController(this).navigate(action)
         Toast.makeText(context,data.postId, Toast.LENGTH_SHORT).show()
