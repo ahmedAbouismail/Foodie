@@ -24,7 +24,7 @@ import de.abou.foodie.databinding.SignUpFragmentBinding
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
 
         viewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
 
@@ -34,10 +34,8 @@ import de.abou.foodie.databinding.SignUpFragmentBinding
             container, false
         )
 
-        //Binding
         binding.signUpViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
 
 
         return binding.root
@@ -45,7 +43,6 @@ import de.abou.foodie.databinding.SignUpFragmentBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.eventSignUp.observe(viewLifecycleOwner, Observer { signedUp->
             when{
                 signedUp -> moveToPost()
@@ -57,10 +54,6 @@ import de.abou.foodie.databinding.SignUpFragmentBinding
 
     }
 
-      private fun showError() {
-          Toast.makeText(activity, "Authentication failed.",
-                  Toast.LENGTH_SHORT).show()
-      }
 
       private fun moveToPost() {
           Toast.makeText(activity, "User created", Toast.LENGTH_SHORT).show()

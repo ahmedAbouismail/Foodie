@@ -18,13 +18,13 @@ import de.abou.foodie.screens.myPosts.MyPostsViewModel
 import de.abou.foodie.screens.post.PostAdapter
 
 
+
 class SubscribedPostsFragment : Fragment(),CellClickListener {
 
     private lateinit var viewModel: SubscribedPostsViewModel
 
     private lateinit var binding : SubscribedPostsFragmentBinding
 
-    private lateinit var posts : MutableList<Post>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -51,10 +51,6 @@ class SubscribedPostsFragment : Fragment(),CellClickListener {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
     override fun onCellClickListener(data: Post) {
         TODO("Not yet implemented")
     }

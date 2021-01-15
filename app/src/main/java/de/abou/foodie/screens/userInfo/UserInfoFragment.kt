@@ -17,7 +17,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import de.abou.foodie.R
-import de.abou.foodie.databinding.MyProfileFragmentBinding
 import de.abou.foodie.databinding.UserInfoFragmentBinding
 import de.abou.foodie.screens.post.PostFragment
 
@@ -52,8 +51,8 @@ class UserInfoFragment : Fragment() {
                 it-> {
                     NavHostFragment.findNavController(this).navigate(action)
                 }else->{
-                    Toast.makeText(context, "Please check that all fields are not empty", Toast.LENGTH_SHORT).show()
-                }
+                Toast.makeText(context, "Please check that all fields are not empty", Toast.LENGTH_SHORT).show()
+            }
             }
         })
 

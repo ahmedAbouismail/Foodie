@@ -23,11 +23,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import de.abou.foodie.R
 import de.abou.foodie.databinding.FragmentSplashBinding
-import de.abou.foodie.databinding.MyProfileFragmentBinding
 import de.abou.foodie.screens.home.PostsListFragmentDirections
 import de.abou.foodie.screens.home.PostsListViewModel
 import de.abou.foodie.screens.regestration.signIn.SignInViewModel
-import de.abou.foodie.screens.userInfo.MyProfileViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -66,7 +64,6 @@ class SplashFragment : Fragment() {
         observeAuthenticationState()
     }
     private fun observeAuthenticationState() {
-
         viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when(authenticationState){
                 SplashViewModel.AuthenticationState.AUTHENTICATED ->{

@@ -32,7 +32,9 @@ import de.abou.foodie.database.MyFirestore
 import de.abou.foodie.databinding.PostFragmentBinding
 import de.abou.foodie.screens.MapsFragment
 
-
+/**
+ * In this Fragment can the user add a new post
+ */
 class PostFragment : Fragment() {
 
     companion object{
@@ -71,6 +73,7 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //check if the User accepted the permission
         binding.addPostImageBtn.setOnClickListener{
             checkPermission()
         }
@@ -82,7 +85,7 @@ class PostFragment : Fragment() {
                     NavHostFragment.findNavController(this).navigate(action)
                     Toast.makeText(context, "Post added Successfully", Toast.LENGTH_SHORT).show()
                 }else->{
-                Toast.makeText(context, "Please check the fields again", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "A filed was empty", Toast.LENGTH_SHORT).show()
                 }
             }
         })
@@ -92,6 +95,7 @@ class PostFragment : Fragment() {
         viewModel.checkPermissionLiveData.observe(viewLifecycleOwner, Observer {it
             when{
                 it-> {
+                    // take the permission then open the gallery
                     permissionGranted()
                     openGalleryForImage()
                 }
@@ -105,14 +109,16 @@ class PostFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         binding.addPostImageBtn.setBackgroundResource(R.drawable.ic_add_photo_post_70)
+        //set the image in the view
         binding.addPostImageBtn.setImageURI(data?.data)
         if (data?.data != null){
+            //remove the drawable icon if image was added from the gallery
             binding.addPostImageBtn.setBackgroundResource(0)
         }
 
     }
+
     private fun permissionGranted() = ContextCompat.checkSelfPermission(
             requireActivity(),
             Manifest.permission.READ_EXTERNAL_STORAGE
@@ -135,7 +141,7 @@ class PostFragment : Fragment() {
         try {
             startActivityForResult(intent, REQUEST_CODE)
         }catch (e: ActivityNotFoundException){
-            Log.e(TAG, "Can't open the Gallery",e)
+            Toast.makeText(context, "Can't open the Gallery", Toast.LENGTH_SHORT).show()
         }
     }
 

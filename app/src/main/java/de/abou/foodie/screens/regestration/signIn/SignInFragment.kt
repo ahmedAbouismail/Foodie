@@ -27,7 +27,6 @@ class SignInFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
 
-        //Init for the lateinit var
         viewModel = ViewModelProvider(this).get(SignInViewModel::class.java)
 
         binding = DataBindingUtil.inflate<SignInFragmentBinding>(
@@ -36,11 +35,9 @@ class SignInFragment : Fragment() {
                 container, false
         )
 
-        //Binding
         binding.signInViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-//        observeAuthenticationState()
 
 
         return binding.root
@@ -66,19 +63,6 @@ class SignInFragment : Fragment() {
         })
     }
 
-//    private fun observeAuthenticationState() {
-//        val action = SignInFragmentDirections.actionSignInFragmentToPostsListFragment()
-//        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-//            when(authenticationState){
-//                SignInViewModel.AuthenticationState.AUTHENTICATED->{
-//                    NavHostFragment.findNavController(this).navigate(action)
-//                    Toast.makeText(activity, "SignedIn", Toast.LENGTH_SHORT).show()
-//                }else->{
-//                Toast.makeText(activity, "Sign In please", Toast.LENGTH_SHORT).show()
-//            }
-//            }
-//        })
-//    }
 
     private fun moveToSignUp() {
         val actionToSignUp = SignInFragmentDirections.actionSignInFragmentToSignUpFragment()

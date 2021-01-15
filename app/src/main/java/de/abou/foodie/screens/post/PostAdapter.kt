@@ -31,10 +31,6 @@ class PostAdapter(private val cellClickListener: CellClickListener):androidx.rec
         val item = getItem(position)
         holder.bind(item)
         holder.itemView.setOnClickListener{cellClickListener.onCellClickListener(item)}
-//        holder.itemView.setOnClickListener{
-//            var action = PostsListFragmentDirections.actionPostListFragmentToPostFragment()
-//            NavHostFragment().findNavController().navigate(action)
-//        }
     }
 
 
@@ -45,14 +41,12 @@ class PostAdapter(private val cellClickListener: CellClickListener):androidx.rec
 
             binding.item = item
             binding.executePendingBindings()
-//            Picasso.get().load(Uri.parse(item.photo)).into(binding.postImage)
         }
 
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder? {
                 val layoutInflater = LayoutInflater.from(parent.context)
-
                 val binding = PostItemViewBinding.inflate(layoutInflater, parent, false)
                 return ViewHolder(binding)
             }

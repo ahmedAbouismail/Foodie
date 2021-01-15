@@ -29,8 +29,6 @@ class SignInViewModel():ViewModel() {
     var password = MutableLiveData<String>()
 
     private var auth: FirebaseAuth = Firebase.auth
-
-    //Live Data
     private val _eventSignIn = MutableLiveData<Boolean>()
     val eventSignIn : LiveData<Boolean>
     get() = _eventSignIn
@@ -39,13 +37,7 @@ class SignInViewModel():ViewModel() {
          try {
              auth.signInWithEmailAndPassword(email.value!!, password.value!!)
                      .addOnCompleteListener { task ->
-                         if (task.isSuccessful){
-                             Log.d(TAG, "signInWithEmail:success")
-                             _eventSignIn.value = true
-                         }else{
-                             Log.w(TAG, "signInWithEmail:failure", task.exception)
-                             _eventSignIn.value = false
-                         }
+                         _eventSignIn.value = task.isSuccessful
                      }
          }catch (e: IllegalArgumentException){
              _eventSignIn.value = false
@@ -59,9 +51,7 @@ class SignInViewModel():ViewModel() {
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
     }
 
-    init {
-        Log.i("PostViewModel","PostViewModel Created")
-    }
+
     val authenticationState = FirebaseUserLiveData().map { user ->
 
         if (user != null){

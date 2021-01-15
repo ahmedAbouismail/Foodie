@@ -102,7 +102,7 @@
             android:id="@+id/deleteBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{()-> viewModel.onClickDelete()}"
+            android:onClick="@{()-> viewModel.onDeleteClick()}"
             android:text="Delete"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/editBtn"

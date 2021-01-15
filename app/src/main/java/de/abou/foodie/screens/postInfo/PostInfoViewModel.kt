@@ -24,6 +24,10 @@ class PostInfoViewModel:ViewModel() {
         const val TAG = "PostInfoViewModel"
         const val maxLength : Int = 200
     }
+    private val _db = MyFirestore()
+    private lateinit var myFirebaseStorage : MyFirebaseStorage
+
+    //Live Data to get save the information from clicked post in the Recyclerview
     var postIdLiveData = MutableLiveData<String>()
     var titleLiveData = MutableLiveData<String>()
     var descriptionLiveData = MutableLiveData<String>()
@@ -32,9 +36,12 @@ class PostInfoViewModel:ViewModel() {
     var postOwnerIdLiveData = MutableLiveData<String>()
 
     var switchCheckedLiveData =  MutableLiveData<Boolean>()
+
+
     private val _userLiveData = MutableLiveData<User>()
     val userLiveData : LiveData<User>
     get() = _userLiveData
+
 
     private var _updatePostLivedata = MutableLiveData<Boolean>()
     val updatePostLivedata : LiveData<Boolean>
@@ -45,14 +52,14 @@ class PostInfoViewModel:ViewModel() {
     val deleteLivedata : LiveData<Boolean>
     get() = _deleteLivedata
 
+
     var ownerNameLiveData = MutableLiveData<String>()
     var ownerEmailLiveData = MutableLiveData<String>()
 
-    private val _db = MyFirestore()
-    private lateinit var myFirebaseStorage : MyFirebaseStorage
 
 
 
+    //Variables to change the dimensions of the piked image and convert it to bitmap
     private var aspectRatio : Double = 0.0
     private var targetWidth: Int = 0
     private var targetHeight : Int = 0
@@ -63,11 +70,13 @@ class PostInfoViewModel:ViewModel() {
 
     init {
         getPosts()
-        getUserData()
+        getOwnerData()
+        //for the first use must be false to ask for the permission and then will be always true and the user will not be asked any more for the perm.
         checkPermissionLiveData.value = false
     }
 
-    private fun getUserData() {
+    //get the post-owner data to show it in as info
+    private fun getOwnerData() {
         viewModelScope.launch {
             val user = _db.getUserByUserId(postOwnerIdLiveData.toString())
             ownerEmailLiveData.value = user?.email.toString()
@@ -75,6 +84,9 @@ class PostInfoViewModel:ViewModel() {
         }
     }
 
+    /**
+     * @param imageView get the image view from the xml to convert the image to bitmap
+     */
     private fun modifyImage(imageView : ImageView){
 
         bitmap = (imageView.drawable as BitmapDrawable).bitmap
@@ -83,6 +95,11 @@ class PostInfoViewModel:ViewModel() {
         Log.e(TAG, imageView.id.toString())
     }
 
+    /**
+     * To Change the dimension of the image
+     * @param source the bitmap the we got from modifyImage()
+     * @param maxLength the wanted length
+     */
     private fun resizeBitmap(source: Bitmap, maxLength: Int): Bitmap {
         try {
             if (source.height >= source.width) {
@@ -115,23 +132,26 @@ class PostInfoViewModel:ViewModel() {
         return baos.toByteArray()
     }
 
-    private fun getPosts(){
-        viewModelScope.launch {
-            _userLiveData.value = _db.getUserByUserId(getCurrentUser())
-        }
-    }
 
+    /**
+     * to edit the post with the new entries
+     */
     fun onEditClick(imageView: ImageView){
         try {
+            //modify and then convert to Byt to upload it in the Storage
             modifyImage(imageView = imageView)
-
             var ref = imageRefLiveData.value
             val data = convertToBytes(resizedImage)
-            Log.i(TAG, ref.toString())
+
+            //create obj of the storage with defined ref
             myFirebaseStorage = MyFirebaseStorage(ref!!)
+
             viewModelScope.launch {
+                //upload the image in the storage
                 myFirebaseStorage.uploadImageOnStorage(data)
+                //get the uri-download of the image
                 var uri = myFirebaseStorage.getImageUri()
+                //check if any field is empty if empty then show toast message
                 if (titleLiveData.value.toString().isNullOrEmpty()){
                     _updatePostLivedata.value = false
                 }else{
@@ -146,6 +166,28 @@ class PostInfoViewModel:ViewModel() {
 
     }
 
+    /**
+     * send the status of the switch to the db to delete or add the subscribe
+     */
+    fun onSwitchClick(view: Switch){
+        viewModelScope.launch {
+            addSubscriber(view.isChecked)
+            addSubscribedPostToUser(view.isChecked)
+        }
+    }
+
+    fun onDeleteClick(){
+        viewModelScope.launch {
+            deletePost()
+        }
+    }
+
+    private fun getPosts(){
+        viewModelScope.launch {
+            _userLiveData.value = _db.getUserByUserId(getCurrentUser())
+        }
+    }
+
     private suspend fun updatePost(title:String, description:String, photo:String){
         viewModelScope.launch {
             Log.i("InfoPost", postIdLiveData.value.toString())
@@ -153,18 +195,9 @@ class PostInfoViewModel:ViewModel() {
     }
 
 
-    fun onSwitchClick(view: Switch){
-        viewModelScope.launch {
-            Log.i(TAG, view.isChecked.toString())
-            addSubscriber(view.isChecked)
-            addSubscribedPostToUser(view.isChecked)
-        }
-    }
-
     private suspend fun addSubscriber(checked:Boolean){
         viewModelScope.launch {
-            _db.addOrDeleteSubscriberToPost(postOwnerIdLiveData.value!!
-                    , postIdLiveData.value!!
+            _db.addOrDeleteSubscriberToPost(postIdLiveData.value!!
                     , getCurrentUser(), checked)
         }
     }
@@ -180,11 +213,7 @@ class PostInfoViewModel:ViewModel() {
         return FirebaseAuth.getInstance().currentUser!!.uid
     }
 
-    fun onClickDelete(){
-        viewModelScope.launch {
-            deletePost()
-        }
-    }
+
     private suspend fun deletePost(){
         viewModelScope.launch {
             var ref = imageRefLiveData.value

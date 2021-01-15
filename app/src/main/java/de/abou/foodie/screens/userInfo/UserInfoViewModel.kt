@@ -28,7 +28,7 @@ class UserInfoViewModel:ViewModel() {
     val checkPermissionLiveData = MutableLiveData<Boolean>()
     private var _taskLiveData = MutableLiveData<Boolean>()
     val taskLiveData : LiveData<Boolean>
-    get() = _taskLiveData
+        get() = _taskLiveData
 
     private lateinit var bitmap : Bitmap
     private lateinit var resizedImage : Bitmap

@@ -13,12 +13,11 @@ class SubscribedPostsViewModel:ViewModel() {
     private val _db = MyFirestore()
     var myPostsLiveData = MutableLiveData<List<Post>>()
 
+    /**
+     * get the posts to show in the Recyclerview
+     */
     init {
         getPosts()
-    }
-
-    private fun getCurrentUserId():String{
-        return FirebaseAuth.getInstance().currentUser!!.uid
     }
 
     private fun getPosts(){

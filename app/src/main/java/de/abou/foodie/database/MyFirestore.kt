@@ -181,9 +181,12 @@ class MyFirestore {
     }
 
     /**
-     * @param
+     * Add the Subscriber id in idsOfSubscribers
+     * @param postId post id that we want change
+     * @param subscriberId the current user id who want to subscribe the post
+     * @param checked the status of the switch button if true add the subscriber if false remove the subscriber
      */
-    suspend fun addOrDeleteSubscriberToPost(postOwnerId: String, postId: String, subscriberId: String, checked: Boolean) {
+    suspend fun addOrDeleteSubscriberToPost(postId: String, subscriberId: String, checked: Boolean) {
         withContext(Dispatchers.IO) {
             try {
                 if (checked) {
@@ -201,6 +204,7 @@ class MyFirestore {
 
                     var x = _Firestore.collection(Constants.POSTS)
                         .document(postId).get().await().toObject<Post>()
+                    // if the the list empty then put subscribe field to false
                     if(x!!.idsOfSubscribers.isEmpty()){
                         _Firestore.collection(Constants.POSTS)
                             .document(postId)
@@ -218,6 +222,11 @@ class MyFirestore {
         }
     }
 
+    /**
+     * Add the posts that the user subscribed in idsOfSubscribedPosts
+     * @param postId post id that we want to change
+     * @param checked get the status of the switch button
+     */
     suspend fun updateSubscribedPostsInUser(postId: String, checked: Boolean) {
         withContext(Dispatchers.IO) {
             if (checked) {
@@ -232,6 +241,11 @@ class MyFirestore {
 
         }
     }
+
+    /**
+     * Get the Posts that the user subscribed
+     * @return list of those Posts
+     */
     suspend fun getOnlyPostsContainIdOfSubscribers():List<Post>{
         return try {
             withContext(Dispatchers.IO){
@@ -245,6 +259,10 @@ class MyFirestore {
         }
     }
 
+    /**
+     * @param postId post id that we want remove
+     * @return true if the process successfully complete
+     */
     suspend fun deletePost(postId: String):Boolean{
         return try {
             withContext(Dispatchers.IO){
@@ -259,9 +277,12 @@ class MyFirestore {
             Log.w(TAG, e)
             false
         }
-
     }
 
+    /**
+     * @param firstName the new value to update in user
+     * @param lastName the new value to update in user
+     */
     suspend fun updateUser (firstName : String, lastName:String):Boolean{
         return try {
             withContext(Dispatchers.IO){
@@ -277,7 +298,7 @@ class MyFirestore {
         }
     }
 
-    fun getCurrentUserId(): String {
+    private fun getCurrentUserId(): String {
         Log.i(TAG, FirebaseAuth.getInstance().currentUser!!.uid)
         return FirebaseAuth.getInstance().currentUser!!.uid
     }

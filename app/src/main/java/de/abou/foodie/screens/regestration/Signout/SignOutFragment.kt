@@ -29,7 +29,7 @@ class SignOutFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this).get(SignOutViewModel::class.java)
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_signout, container, false)
     }
 

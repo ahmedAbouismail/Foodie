@@ -19,11 +19,13 @@ import de.abou.foodie.databinding.PostsListFragmentBinding
 import de.abou.foodie.screens.post.PostAdapter
 import de.abou.foodie.screens.postInfo.PostInfoViewModel
 
+/**
+ * In this Fragment the can see the posts of the other users
+ */
 
 class PostsListFragment : Fragment(), CellClickListener {
 
     private lateinit var viewModel: PostsListViewModel
-
     private val postInfoViewModel : PostInfoViewModel by activityViewModels()
     private lateinit var binding : PostsListFragmentBinding
 
@@ -35,8 +37,9 @@ class PostsListFragment : Fragment(), CellClickListener {
 
 
         viewModel = ViewModelProvider(this).get(PostsListViewModel::class.java)
+        //check if the current user authenticated
         observeAuthenticationState()
-//        postViewModel = ViewModelProvider().get(PostViewModel::class.java)
+
 
         binding = DataBindingUtil.inflate<PostsListFragmentBinding>(
             inflater,
@@ -46,8 +49,6 @@ class PostsListFragment : Fragment(), CellClickListener {
 
 
 
-
-        // Inflate the layout for this fragment
         return binding.root
     }
 
@@ -70,7 +71,6 @@ class PostsListFragment : Fragment(), CellClickListener {
         viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when(authenticationState){
                 PostsListViewModel.AuthenticationState.AUTHENTICATED ->{
-                    Log.i("7aa", "Autha")
                     updateUI()
                     Toast.makeText(activity, "SignedIn", Toast.LENGTH_SHORT).show()
                 }else->{
@@ -79,6 +79,7 @@ class PostsListFragment : Fragment(), CellClickListener {
             }
         })
     }
+
 
     private fun updateUI(){
         val adapter = PostAdapter(this)
@@ -89,6 +90,10 @@ class PostsListFragment : Fragment(), CellClickListener {
             }
         })
     }
+
+    /**
+     * Send the data of the clicked post and nav to the postInfoFragment
+     */
     override fun onCellClickListener(data: Post) {
         postInfoViewModel.postIdLiveData.value = data.postId
         postInfoViewModel.titleLiveData.value = data.title
@@ -97,9 +102,12 @@ class PostsListFragment : Fragment(), CellClickListener {
         postInfoViewModel.imageRefLiveData.value = data.imageRef
         postInfoViewModel.switchCheckedLiveData.value = data.subscribe
         postInfoViewModel.postOwnerIdLiveData.value = data.owner
+        moveToPostInfo()
+    }
+
+    private fun moveToPostInfo() {
         var action = PostsListFragmentDirections.actionPostsListFragmentToPostInfoFragment()
         NavHostFragment.findNavController(this).navigate(action)
-        Toast.makeText(context,data.postId, Toast.LENGTH_SHORT).show()
     }
 
 

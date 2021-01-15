@@ -22,7 +22,6 @@ class PostsListViewModel:ViewModel() {
         }catch (e:NullPointerException){
 
         }
-        Log.i("PostViewModel","PostViewModel Created")
     }
 
     enum class AuthenticationState {

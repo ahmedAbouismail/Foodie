@@ -28,14 +28,17 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
     }
 
 
-
+    private  var _db = MyFirestore()
+    private var currentUser = FirebaseAuth.getInstance().currentUser!!.uid
 
     val checkPermissionLiveData = MutableLiveData<Boolean>()
 
+    //elements of the post
     val titleLiveData = MutableLiveData<String>()
     val descriptionLiveData = MutableLiveData<String>()
 
 
+    //Variables to change the dimensions of the piked image and convert it to bitmap
     private var aspectRatio : Double = 0.0
     private var targetWidth: Int = 0
     private var targetHeight : Int = 0
@@ -45,33 +48,38 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
     private var baos = ByteArrayOutputStream()
 
 
-    private  var _db = MyFirestore()
 
-    private var _postIdLiveData = MutableLiveData<String>()
-    get() = _postIdLiveData
 
+
+    //live data to check if the update process complete
     private var _updatePostLivedata = MutableLiveData<Boolean>()
     val updatePostLivedata : LiveData<Boolean>
     get() = _updatePostLivedata
-    private var currentUser = FirebaseAuth.getInstance().currentUser!!.uid
+
 
 
 
 
     init {
+        //for the first use must be false to ask for the permission and then will be always true and the user will not be asked any more for the perm.
         checkPermissionLiveData.value = false
     }
 
-
+    /**
+     * @param imageView get the image view from the xml to convert the image to bitmap
+     */
     private fun modifyImage(imageView : ImageView){
 
         bitmap = (imageView.drawable as BitmapDrawable).bitmap
         resizedImage = resizeBitmap(bitmap, maxLength)
 
-        Log.e(TAG, imageView.id.toString())
-
     }
 
+    /**
+     * To Change the dimension of the image
+     * @param source the bitmap the we got from modifyImage()
+     * @param maxLength the wanted length
+     */
     private fun resizeBitmap(source: Bitmap, maxLength: Int): Bitmap {
         try {
             if (source.height >= source.width) {
@@ -99,27 +107,35 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
         }
     }
 
-
-
+    /**
+     * upload the Post in the Db when the user click add
+     * @param imageView that we will send to  modifyImage()
+     */
     fun onAddPost(imageView: ImageView){
         try {
+            //the place where we want save the image in the storage
             val ref = Constants.POSTS + "/"+ FirebaseAuth.getInstance().currentUser!!.uid + "/"+ titleLiveData.value!! + "/"+ Timestamp.now()
+            //create obj of the storage with defined ref
             val myFirebaseStorage = MyFirebaseStorage(ref)
 
+            //modify and then convert to Byt to upload it in the Storage
             modifyImage(imageView)
-
             val data = convertToBytes(resizedImage)
 
-            viewModelScope.launch {
 
+            viewModelScope.launch {
+                //upload the image in the storage
                 myFirebaseStorage.uploadImageOnStorage(data)
 
+                //get the uri-download of the image
                 var uri = myFirebaseStorage.getImageUri()
+                //create new post object and put the new data in it
                 var post = Post(owner = currentUser,
                         title = titleLiveData.value.toString()
                         ,description = descriptionLiveData.value.toString()
                         ,imageRef = ref
                         ,photo = uri)
+                //finally insert the post obj in the Db
                 insertPostToDb(post)
             }
         }catch (e: NullPointerException){
@@ -129,6 +145,7 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
         }
 
     }
+
     private suspend fun insertPostToDb(post:Post){
         try {
             viewModelScope.launch{

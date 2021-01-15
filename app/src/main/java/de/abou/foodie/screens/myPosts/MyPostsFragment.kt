@@ -17,6 +17,9 @@ import de.abou.foodie.screens.post.PostAdapter
 import de.abou.foodie.screens.home.CellClickListener
 import de.abou.foodie.screens.postInfo.PostInfoViewModel
 
+/**
+ * In this Fragment can the user see his own Posts
+ */
 class MyPostsFragment : Fragment(), CellClickListener {
 
     private lateinit var viewModel: MyPostsViewModel
@@ -61,6 +64,9 @@ class MyPostsFragment : Fragment(), CellClickListener {
 
 
 
+    /**
+     * Send the data of the clicked post and nav to the postInfoFragment
+     */
     override fun onCellClickListener(data: Post) {
         postInfoViewModel.postIdLiveData.value = data.postId
         postInfoViewModel.titleLiveData.value = data.title
@@ -69,9 +75,12 @@ class MyPostsFragment : Fragment(), CellClickListener {
         postInfoViewModel.imageRefLiveData.value = data.imageRef
         postInfoViewModel.postOwnerIdLiveData.value = data.owner
         postInfoViewModel.switchCheckedLiveData.value = data.subscribe
+        moveToPostInfo()
+    }
+
+    private fun moveToPostInfo() {
         var action = MyPostsFragmentDirections.actionMyPostsFragmentToPostInfoFragment()
         NavHostFragment.findNavController(this).navigate(action)
-        Toast.makeText(context,data.postId, Toast.LENGTH_SHORT).show()
     }
 
 

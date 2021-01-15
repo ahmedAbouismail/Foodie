@@ -11,6 +11,9 @@ import androidx.navigation.ui.NavigationUI
 import de.abou.foodie.R
 import de.abou.foodie.databinding.ActivityMainBinding
 
+/**
+ * used as nav host
+ */
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
 
@@ -40,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         //Authentication Check
         observeAuthenticationState()
 
-//        binding.navView.setNavigationItemSelectedListener(this)
     }
 
 

@@ -23,12 +23,15 @@ import de.abou.foodie.databinding.PostInfoFragmentBinding
 import de.abou.foodie.screens.post.PostFragment
 import de.abou.foodie.screens.postInfo.PostInfoViewModel
 
+/**
+ * In this Fragment can the user see the details of each post and edit it if he is the owner of thr post
+ */
 
 class PostInfoFragment : Fragment(){
 
-//    private lateinit var viewModel: PostInfoViewModel
+
     private lateinit var binding : PostInfoFragmentBinding
-//    private lateinit var viewModelN: PostInfoViewModel
+
     private val viewModel : PostInfoViewModel by activityViewModels()
 
 
@@ -43,7 +46,20 @@ class PostInfoFragment : Fragment(){
         )
 
 
+        updateUI()
 
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        return binding.root
+    }
+
+    /**
+     *Update the UI according to teh post and the owner
+     * if the id exists in the postidsList of the current user then he can edit it but not subscribe it
+     */
+    private fun updateUI() {
         viewModel.userLiveData.observe(viewLifecycleOwner, Observer {
             for (id in it.idsOfPosts){
                 if (id == viewModel.postIdLiveData.value){
@@ -57,66 +73,57 @@ class PostInfoFragment : Fragment(){
                     binding.ownerPostDescription.visibility = View.VISIBLE
                 }
             }
-
+            //check if the post was subscribed  from the current used
             for(id in it.idsOfSubscribedPosts){
                 binding.subscribe.isChecked = id == viewModel.postIdLiveData.value
             }
         })
-
-        //Binding
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-        // Inflate the layout for this fragment
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
-//        binding.subscribe.setOnCheckedChangeListener { buttonView, isChecked -> viewModel.switchCheckedLiveData.value =
-//            isChecked }
-
+        //observe if the process was successful
         viewModel.updatePostLivedata.observe(viewLifecycleOwner, Observer {
-            var action = PostInfoFragmentDirections.actionPostInfoFragmentToMyPostsFragment()
             when{
                 it->{
-                    NavHostFragment.findNavController(this).navigate(action)
+                    moveToHome()
                     viewModel.resetUpdateLivedate()
                 }else->{
                     Toast.makeText(context, "Please fill the all fields", Toast.LENGTH_SHORT).show()
             }
             }
         })
+        //observe if the process was successful
         viewModel.deleteLivedata.observe(viewLifecycleOwner, Observer {
-            var action = PostInfoFragmentDirections.actionPostInfoFragmentToMyPostsFragment()
             when{
                 it->{
-                    NavHostFragment.findNavController(this).navigate(action)
+                    moveToMyPosts()
                     viewModel.resetDeleteLivedate()
                 }else->{
                 Toast.makeText(context, "Can't delete the Post", Toast.LENGTH_SHORT)
             }
             }
         })
-//        viewModel.switchCheckedLiveData.observe(viewLifecycleOwner, Observer {
-//            viewModel.onSwitchClick()
-//            when{
-//                it-> binding.subscribe.isChecked = true
-//                else->{
-//                    binding.subscribe.isChecked = false
-//                }
-//            }
-//        })
+
+        //put the image using third Lib. in the image view
         viewModel.imageLiveData.observe(viewLifecycleOwner, Observer {
             Picasso.get().load(it).into(binding.postInfoImage);
-
         })
 
         binding.postInfoImage.setOnClickListener{
             checkPermission()
         }
+    }
+
+    private fun moveToMyPosts() {
+        var action = PostInfoFragmentDirections.actionPostInfoFragmentToMyPostsFragment()
+        NavHostFragment.findNavController(this).navigate(action)
+    }
+
+    private fun moveToHome() {
+        var action = PostInfoFragmentDirections.actionPostInfoFragmentToMyPostsFragment()
+        NavHostFragment.findNavController(this).navigate(action)
     }
 
     private fun checkPermission() {
@@ -139,7 +146,6 @@ class PostInfoFragment : Fragment(){
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         binding.postInfoImage.setImageURI(data?.data)
 
     }

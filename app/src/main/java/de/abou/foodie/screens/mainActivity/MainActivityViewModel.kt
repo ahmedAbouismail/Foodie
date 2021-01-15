@@ -26,7 +26,4 @@ class MainActivityViewModel:ViewModel() {
         }
     }
 
-    fun signOut(){
-
-    }
 }

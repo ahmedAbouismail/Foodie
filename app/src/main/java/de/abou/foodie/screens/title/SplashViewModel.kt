@@ -16,7 +16,6 @@ class SplashViewModel:ViewModel() {
 
         }else{
             AuthenticationState.UNAUTHENTICATED
-
         }
     }
 }

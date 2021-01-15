@@ -38,20 +38,13 @@ class SignUpViewModel:ViewModel() {
     val eventSignUp : LiveData<Boolean>
         get() = _eventSignUp
 
-    private var _isUserExistsLiveData = MutableLiveData<Boolean>()
-    val isUserExistsLiveData : LiveData<Boolean>
-    get() = _isUserExistsLiveData
 
     fun createUser() {
         viewModelScope.launch {
             try {
                 auth.createUserWithEmailAndPassword(email.value!!, password.value!!).await()
-
                 user = User(firstName.value!!, lastName.value!!, email.value!!)
-
                 db.insertUser(user)
-
-                Log.d(TAG, "createUserWithEmail:success")
                 _eventSignUp.value = true
             } catch (e: FirebaseAuthUserCollisionException) {
                 _eventSignUp.value = false
