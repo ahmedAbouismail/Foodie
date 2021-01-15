@@ -30,7 +30,9 @@ class MyFirestore {
     val postIdsLiveData: LiveData<String>
         get() = _postIdLiveData
 
-
+    /**
+     * @param user
+     */
     suspend fun insertUser(user: User) {
         try {
             withContext(Dispatchers.IO) {
@@ -43,6 +45,10 @@ class MyFirestore {
         }
     }
 
+    /**
+     * @param post
+     * @return true if the process successfully complete
+     */
     suspend fun insertPost(post: Post):Boolean {
         return try {
             withContext(Dispatchers.IO) {
@@ -65,6 +71,9 @@ class MyFirestore {
 
     }
 
+    /**
+     * @param postId
+     */
     suspend fun insertPostIdToUser(postId: String) {
         try {
             withContext(Dispatchers.IO) {
@@ -94,6 +103,9 @@ class MyFirestore {
         return liveData
     }
 
+    /**
+     * @return List of Posts of the other Users to the current user
+     */
     fun getPostsOfOthers(): LiveData<List<Post>> {
         var liveData = MutableLiveData<List<Post>>()
 
@@ -110,6 +122,10 @@ class MyFirestore {
         return liveData
     }
 
+    /**
+     * @param userId user id
+     * @return current user-object from the Db
+     */
     suspend fun getUserByUserId(userId: String): User? {
         return try {
             withContext(Dispatchers.IO) {
@@ -125,6 +141,10 @@ class MyFirestore {
         }
     }
 
+    /**
+     * @param userId user id
+     * @return list of Post-object from the Db
+     */
     suspend fun getPostsByUserId(userId: String): List<Post> {
         return try {
             withContext(Dispatchers.IO) {
@@ -139,6 +159,13 @@ class MyFirestore {
         }
     }
 
+    /**
+     * @param postId
+     * @param title the new title to update in post
+     * @param description the new description to update in post
+     * @param photo the new photo download link to update in post
+     * @return true if the process successfully complete
+     */
     suspend fun updatePost(postId: String, title: String, description: String, photo: String):Boolean {
         return try {
             withContext(Dispatchers.IO) {
@@ -153,6 +180,9 @@ class MyFirestore {
         }
     }
 
+    /**
+     * @param
+     */
     suspend fun addOrDeleteSubscriberToPost(postOwnerId: String, postId: String, subscriberId: String, checked: Boolean) {
         withContext(Dispatchers.IO) {
             try {
@@ -160,10 +190,26 @@ class MyFirestore {
                     _Firestore.collection(Constants.POSTS)
                         .document(postId)
                         .update("idsOfSubscribers", FieldValue.arrayUnion(subscriberId)).await()
+                    _Firestore.collection(Constants.POSTS)
+                        .document(postId)
+                        .update("subscribe", true).await()
+
                 } else {
                     _Firestore.collection(Constants.POSTS)
                         .document(postId)
                             .update("idsOfSubscribers", FieldValue.arrayRemove(subscriberId)).await()
+
+                    var x = _Firestore.collection(Constants.POSTS)
+                        .document(postId).get().await().toObject<Post>()
+                    if(x!!.idsOfSubscribers.isEmpty()){
+                        _Firestore.collection(Constants.POSTS)
+                            .document(postId)
+                            .update("subscribe", false).await()
+                    }else{
+                        _Firestore.collection(Constants.POSTS)
+                            .document(postId)
+                            .update("subscribe", true).await()
+                    }
                 }
 
             } catch (e: FirebaseFirestoreException) {
@@ -184,6 +230,18 @@ class MyFirestore {
                         .update("idsOfSubscribers", FieldValue.arrayRemove(postId)).await()
             }
 
+        }
+    }
+    suspend fun getOnlyPostsContainIdOfSubscribers():List<Post>{
+        return try {
+            withContext(Dispatchers.IO){
+                _Firestore.collection(Constants.POSTS)
+                    .whereEqualTo("subscribe", true).whereEqualTo("owner", getCurrentUserId())
+                    .get().await().toObjects<Post>()
+            }
+        }catch (e: FirebaseFirestoreException){
+            Log.w(TAG, e)
+            return emptyList()
         }
     }
 

@@ -63,21 +63,6 @@ class PostFragment : Fragment() {
 
         observeAuthenticationState()
 
-//        //Initialize the autocomplete google sdk
-//        Places.initialize(requireContext(), "AIzaSyD_UXLvad0frzugbqcC5sWrVKDZ7zY3g3Q")
-//        // Create a new PLaces Client instance
-//        var placesClient : PlacesClient = Places.createClient(requireContext())
-//
-//
-//        // Initialize the AutocompleteSupportFragment.
-//        val autocompleteFragment = fragmentManager?.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
-//        // Specify the types of place data to return.
-//        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
-
-//        binding.address.setOnClickListener {
-//            var action = PostFragmentDirections.actionPostViewToMapsFragment()
-//            NavHostFragment.findNavController(this).navigate(action)
-//        }
         binding.lifecycleOwner = this
         binding.postViewModel = viewModel
         return binding.root

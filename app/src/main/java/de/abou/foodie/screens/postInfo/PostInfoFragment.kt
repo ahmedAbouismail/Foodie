@@ -16,6 +16,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import de.abou.foodie.R
 import de.abou.foodie.databinding.PostInfoFragmentBinding
@@ -43,17 +44,6 @@ class PostInfoFragment : Fragment(){
 
 
 
-
-        //Binding
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-        // Inflate the layout for this fragment
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         viewModel.userLiveData.observe(viewLifecycleOwner, Observer {
             for (id in it.idsOfPosts){
                 if (id == viewModel.postIdLiveData.value){
@@ -72,6 +62,18 @@ class PostInfoFragment : Fragment(){
                 binding.subscribe.isChecked = id == viewModel.postIdLiveData.value
             }
         })
+
+        //Binding
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        // Inflate the layout for this fragment
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
 
 //        binding.subscribe.setOnCheckedChangeListener { buttonView, isChecked -> viewModel.switchCheckedLiveData.value =
 //            isChecked }

@@ -115,4 +115,9 @@
             android:id="@+id/action_splashFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/subscribed_posts_list"
+        android:name="de.abou.foodie.screens.mySubscribedPosts.SubscribedPostsFragment"
+        android:label="subscribed_posts_fragment"
+        tools:layout="@layout/subscribed_posts_fragment" />
 </navigation>

@@ -16,6 +16,10 @@
         android:title="My Posts"
         android:icon="@drawable/ic_my_posts_24"/>
     <item
+        android:id="@+id/subscribed_posts_list"
+        android:title="Subscribed posts"
+        android:icon="@drawable/ic_my_posts_24"/>
+    <item
         android:id="@+id/signOutFragment"
         android:icon="@drawable/ic_sign_out_drawer_24"
         android:title="@string/sign_out_drawer" />
