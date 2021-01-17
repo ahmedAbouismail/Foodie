@@ -74,7 +74,6 @@ class PostsListFragment : Fragment(), CellClickListener {
             when(authenticationState){
                 PostsListViewModel.AuthenticationState.AUTHENTICATED ->{
                     updateUI()
-                    Toast.makeText(activity, "SignedIn", Toast.LENGTH_SHORT).show()
                 }else->{
                 moveToSignIN()
                     Toast.makeText(activity, "please sign in to see the content", Toast.LENGTH_SHORT).show()

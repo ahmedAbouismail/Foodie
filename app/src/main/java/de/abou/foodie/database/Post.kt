@@ -11,5 +11,6 @@ data class Post(
         var photo:String = "",
         var imageRef:String = "",
         var description: String = "",
+        var price: String = "",
         var subscribe:Boolean = false,
         var idsOfSubscribers: MutableList<String> = mutableListOf())

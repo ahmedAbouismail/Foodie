@@ -55,7 +55,9 @@
 
         <action
             android:id="@+id/action_postView_to_myPostsFragment"
-            app:destination="@id/myPostsFragment" />
+            app:destination="@id/myPostsFragment"
+            app:popUpTo="@id/postsListFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/myPostsFragment"

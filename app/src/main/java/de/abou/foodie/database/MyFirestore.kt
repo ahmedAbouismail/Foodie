@@ -126,11 +126,15 @@ class MyFirestore {
      * @param userId user id
      * @return current user-object from the Db
      */
-    suspend fun getUserByUserId(userId: String): User? {
+    suspend fun getUserByUserId(userId: String = ""): User? {
+        var id = userId
+        if(id.isNullOrEmpty()){
+            id = getCurrentUserId()
+        }
         return try {
             withContext(Dispatchers.IO) {
                 _Firestore.collection(Constants.USERS)
-                        .document(getCurrentUserId())
+                        .document(id)
                         .get().await().toObject<User>()
 
             }
@@ -296,6 +300,24 @@ class MyFirestore {
             Log.w(TAG, e)
             false
         }
+    }
+
+    suspend fun getUsersList(userIds:Iterable<String>):List<User>{
+        var users = mutableListOf<User>()
+        return try {
+            for (id in userIds){
+                withContext(Dispatchers.IO){
+                    var user  = _Firestore.collection(Constants.USERS)
+                            .document(id).get().await().toObject<User>()
+                    users.add(user!!)
+                }
+            }
+            users
+        }catch (e: FirebaseFirestoreException){
+            Log.w(TAG, e)
+            listOfNotNull()
+        }
+
     }
 
     private fun getCurrentUserId(): String {

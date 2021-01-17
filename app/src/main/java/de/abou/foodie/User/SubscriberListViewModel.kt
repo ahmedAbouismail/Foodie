@@ -20,12 +20,8 @@ class SubscriberListViewModel:ViewModel() {
 
     fun getSubscribersInfo(){
         viewModelScope.launch {
-            for (subscriber in subscribersId.value!!){
-                user.add(_db.getUserByUserId(subscriber)!!)
-                Log.i("A7med", user[0]!!.firstName.toString())
-                users.value = user
-//                users.value?.add(user.value!!)
-            }
+            users.value = _db.getUsersList(subscribersId.value!!)
         }
     }
 }
+

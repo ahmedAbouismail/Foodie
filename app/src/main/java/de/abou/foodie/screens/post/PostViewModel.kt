@@ -23,8 +23,7 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
 
     private companion object{
         const val TAG = "PostViewModel"
-        const val maxLength : Int = 200
-
+        const val maxLength : Int = 1000
     }
 
 
@@ -36,6 +35,7 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
     //elements of the post
     val titleLiveData = MutableLiveData<String>()
     val descriptionLiveData = MutableLiveData<String>()
+    val priceLiveData = MutableLiveData<String>()
 
 
     //Variables to change the dimensions of the piked image and convert it to bitmap
@@ -133,6 +133,7 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
                 var post = Post(owner = currentUser,
                         title = titleLiveData.value.toString()
                         ,description = descriptionLiveData.value.toString()
+                        ,price = priceLiveData.value!! + " $"
                         ,imageRef = ref
                         ,photo = uri)
                 //finally insert the post obj in the Db

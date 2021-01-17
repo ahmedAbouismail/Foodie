@@ -11,86 +11,91 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="5dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="7dp"
-        android:outlineAmbientShadowColor="@color/black">
+        android:layout_height="200dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:outlineAmbientShadowColor="@color/black"
+        app:cardCornerRadius="5dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"/>
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-<!--            <androidx.cardview.widget.CardView-->
-<!--                android:id="@+id/post_image_card"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="8dp"-->
-<!--                android:layout_marginBottom="8dp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:cardCornerRadius="10dp">-->
-<!--                <ImageView-->
-<!--                    android:id="@+id/post_image"-->
-<!--                    android:layout_width="60dp"-->
-<!--                    android:layout_height="60dp"-->
-<!--                    app:postImage="@{item}"-->
-<!--                    tools:srcCompat="@drawable/ic_add_post_24" />-->
-<!--            </androidx.cardview.widget.CardView>-->
+            <!--            <androidx.cardview.widget.CardView-->
+            <!--                android:id="@+id/post_image_card"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="16dp"-->
+            <!--                android:layout_marginTop="8dp"-->
+            <!--                android:layout_marginBottom="8dp"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent"-->
+            <!--                app:cardCornerRadius="10dp">-->
+            <!--                <ImageView-->
+            <!--                    android:id="@+id/post_image"-->
+            <!--                    android:layout_width="60dp"-->
+            <!--                    android:layout_height="60dp"-->
+            <!--                    app:postImage="@{item}"-->
+            <!--                    tools:srcCompat="@drawable/ic_add_post_24" />-->
+            <!--            </androidx.cardview.widget.CardView>-->
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/post_image"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                app:postImage="@{item}"
-                tools:srcCompat="@drawable/ic_add_post_24"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/roundedConner"
+                android:layout_width="402dp"
+                android:layout_height="127dp"
+                android:foreground="@drawable/image_overlay"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/roundedConner"/>
+                app:postImage="@{item}"
+                tools:srcCompat="@drawable/ic_add_post_24" />
 
             <TextView
                 android:id="@+id/post_title"
+                style="@style/roundedConner"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/post_image"
-                app:layout_constraintTop_toTopOf="@+id/post_image"
-                app:postTitle="@{item}"
-                tools:text="Wednesday"
-                android:background="#f9ab55"
+                android:layout_marginBottom="32dp"
+                android:textColor="@color/black"
                 android:textStyle="bold"
-                style="@style/roundedConner"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:postTitle="@{item}"
+                tools:text="Wednesday" />
 
             <TextView
                 android:id="@+id/description_title"
+                style="@style/roundedConner"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="@+id/post_title"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/post_title"
-                app:layout_constraintTop_toBottomOf="@+id/post_title"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:postDescription="@{item}"
-                tools:text="Excellent!!!"
-                android:background="#f9ab55"
-                android:textStyle="bold"
-                style="@style/roundedConner"
-                android:layout_marginBottom="5dp"/>
+                tools:text="Excellent!!!" />
+
+            <TextView
+                android:id="@+id/price_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="80dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:postPrice="@{item}"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

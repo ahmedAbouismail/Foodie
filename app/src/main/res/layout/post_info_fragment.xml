@@ -11,126 +11,212 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/postInfo"
+        android:id="@+id/postInfoImageCard"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView
-            android:id="@+id/postInfoImage"
-            android:layout_width="305dp"
-            android:layout_height="186dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/postInfoTitle"
+        android:layout_height="match_parent"
+        style="@style/textInFields">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/addPostImageBtnCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:background="@color/white"
+            app:cardCornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:clickable="true"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/postInfoImage"
+                android:layout_width="305dp"
+                android:layout_height="186dp"
+                android:clickable="true"
+                app:layout_constraintBottom_toTopOf="@+id/postInfoTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.cardview.widget.CardView>
+
 
         <TextView
             android:id="@+id/postInfoTitle"
-            android:layout_width="397dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toTopOf="@+id/postInfoDescription"
-            app:layout_constraintStart_toStartOf="parent"
+            style="@style/textInFields"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:inputType="text"
-            android:text="@={viewModel.titleLiveData}"/>
-
+            android:text="@={viewModel.titleLiveData}"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addPostImageBtnCard"
+            app:layout_constraintBottom_toTopOf="@id/postInfoDescription"/>
 
         <TextView
             android:id="@+id/postInfoDescription"
-            android:layout_width="393dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="300dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            style="@style/textInFields"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:inputType="text"
-            android:text="@={viewModel.descriptionLiveData}"/>
-
+            android:text="@={viewModel.descriptionLiveData}"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toTopOf="@id/ownerName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/postInfoTitle"
+            app:layout_constraintVertical_bias="0.076" />
 
         <EditText
             android:id="@+id/ownerPostTitle"
+            style="@style/textInFields"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:ems="10"
+            android:layout_marginTop="32dp"
             android:inputType="text"
             android:text="@={viewModel.titleLiveData}"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postInfoImage"
-            android:visibility="invisible" />
+            app:layout_constraintTop_toBottomOf="@id/addPostImageBtnCard"
+            app:layout_constraintBottom_toTopOf="@id/postInfoDescription"/>
 
         <EditText
             android:id="@+id/ownerPostDescription"
+            style="@style/textInFields"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:ems="10"
+            android:layout_marginTop="8dp"
             android:inputType="text"
             android:text="@={viewModel.descriptionLiveData}"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/ownerName"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postInfoDescription"
-            android:visibility="invisible"/>
+            app:layout_constraintTop_toBottomOf="@id/postInfoTitle"
+            app:layout_constraintVertical_bias="0.076" />
 
         <Button
             android:id="@+id/editBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="32dp"
+            android:background="#03A9F4"
+            android:onClick="@{()->viewModel.onEditClick(postInfoImage)}"
             android:text="Edit"
+            android:visibility="invisible"
+            app:icon="@drawable/ic_add_post_24"
+            app:iconGravity="start"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:visibility="invisible"
-            android:onClick="@{()->viewModel.onEditClick(postInfoImage)}"/>
+            app:layout_constraintHorizontal_bias="0.281"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Switch
             android:id="@+id/subscribe"
+            style="@style/textInFields"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="128dp"
+            android:onClick="@{()->viewModel.onSwitchClick(subscribe)}"
             android:text="Subscribe"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:onClick="@{()->viewModel.onSwitchClick(subscribe)}"/>
+            app:layout_constraintStart_toStartOf="parent" />
+
 
         <Button
             android:id="@+id/deleteBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:background="#F44336"
             android:onClick="@{()-> viewModel.onDeleteClick()}"
             android:text="Delete"
             android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/editBtn"
+            app:icon="@drawable/ic_delete_24"
+            app:iconGravity="start"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ownerPostDescription"
-            app:layout_constraintVertical_bias="0.695" />
-
-
+            app:layout_constraintHorizontal_bias="0.721"
+            app:layout_constraintStart_toStartOf="parent" />
         <TextView
-            android:id="@+id/ownerName"
+            android:id="@+id/ownerNameLabel"
+            style="@style/textInFields"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:labelFor="@id/ownerName"
+            android:text="name of owner"
+            app:layout_constraintBottom_toBottomOf="@+id/ownerName"
+            app:layout_constraintEnd_toStartOf="@+id/ownerName"
+            app:layout_constraintHorizontal_bias="0.473"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ownerName" />
+        <TextView
+            android:id="@+id/ownerEmailLabel"
+            style="@style/textInFields"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/ownerEmail"
+            android:text="email of owner"
+            app:layout_constraintBottom_toBottomOf="@+id/ownerEmail"
+            app:layout_constraintEnd_toStartOf="@+id/ownerEmail"
+            app:layout_constraintHorizontal_bias="0.473"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ownerEmail" />
+        <TextView
+            android:id="@+id/postInfoTitleLabel"
+            style="@style/textInFields"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/postInfoTitle"
+            android:text="Title"
+            app:layout_constraintBottom_toBottomOf="@+id/postInfoTitle"
+            app:layout_constraintEnd_toStartOf="@+id/postInfoTitle"
+            app:layout_constraintHorizontal_bias="0.473"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/postInfoTitle" />
+        <TextView
+            android:id="@+id/postInfoDescriptionLabel"
+            style="@style/textInFields"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/postInfoDescription"
+            android:text="Description"
+            app:layout_constraintBottom_toBottomOf="@+id/postInfoDescription"
+            app:layout_constraintEnd_toStartOf="@+id/postInfoDescription"
+            app:layout_constraintHorizontal_bias="0.473"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/postInfoDescription" />
+        <TextView
+            android:id="@+id/ownerName"
+            style="@style/textInFields"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@={viewModel.ownerNameLiveData}"
-            app:layout_constraintBottom_toTopOf="@+id/deleteBtn"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/ownerEmail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ownerPostDescription" />
-
+            app:layout_constraintTop_toBottomOf="@id/postInfoDescription" />
         <TextView
             android:id="@+id/ownerEmail"
+            style="@style/textInFields"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="@={viewModel.ownerEmailLiveData}"
-            app:layout_constraintBottom_toTopOf="@+id/ownerPostDescription"
+            android:textSize="15dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ownerName" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

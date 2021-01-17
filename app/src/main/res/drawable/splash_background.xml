@@ -13,7 +13,7 @@
     <item
         android:width="200dp"
         android:height="200dp"
-        android:drawable="@drawable/vegetables"
+        android:drawable="@drawable/app_logo"
         android:gravity="center">
     </item>
 </layer-list>

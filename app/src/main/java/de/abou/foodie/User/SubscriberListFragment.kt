@@ -35,7 +35,6 @@ class SubscriberListFragment : Fragment() {
         )
 
 
-
         val adapter = UserAdapter()
         binding.subscriberListFragment.adapter = adapter
         viewModel.users.observe(viewLifecycleOwner, Observer {

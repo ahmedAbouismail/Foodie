@@ -14,11 +14,11 @@
     <item
         android:id="@+id/myPostsFragment"
         android:title="My Posts"
-        android:icon="@drawable/ic_my_posts_24"/>
+        android:icon="@drawable/ic_my_posts_24" />
     <item
         android:id="@+id/subscribed_posts_list"
         android:title="Subscribed posts"
-        android:icon="@drawable/ic_my_posts_24"/>
+        android:icon="@drawable/ic_subscribed_post__24"/>
     <item
         android:id="@+id/signOutFragment"
         android:icon="@drawable/ic_sign_out_drawer_24"

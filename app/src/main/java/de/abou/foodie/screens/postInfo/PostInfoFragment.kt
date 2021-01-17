@@ -71,6 +71,10 @@ class PostInfoFragment : Fragment(){
                     binding.postInfoDescription.visibility = View.INVISIBLE
                     binding.ownerPostTitle.visibility = View.VISIBLE
                     binding.ownerPostDescription.visibility = View.VISIBLE
+                    binding.ownerNameLabel.visibility = View.INVISIBLE
+                    binding.ownerEmailLabel.visibility = View.INVISIBLE
+                    binding.ownerEmail.visibility = View.INVISIBLE
+                    binding.ownerName.visibility = View.INVISIBLE
                 }
             }
             //check if the post was subscribed  from the current used

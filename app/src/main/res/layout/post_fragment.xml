@@ -29,18 +29,28 @@
 <!--            app:layout_constraintStart_toStartOf="parent"-->
 <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <ImageView
-            android:id="@+id/addPostImageBtn"
-            android:layout_width="@dimen/postImageWidth"
-            android:layout_height="@dimen/postImageWidth"
-            android:layout_marginTop="56dp"
-            android:background="@drawable/ic_add_photo_post_70"
-            android:clickable="true"
-            android:contentDescription="@string/addImageContentDescription"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/addPostImageBtnCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            app:cardCornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/addPostImageBtn"
+                android:layout_width="350dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/ic_add_photo_post_70"
+                android:clickable="true"
+                android:contentDescription="@string/addImageContentDescription" />
+        </androidx.cardview.widget.CardView>
+
 
         <EditText
            android:id="@+id/addPostTitle"
@@ -52,9 +62,11 @@
            android:hint="@string/addPostTitleHint"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/addPostImageBtn"
+           app:layout_constraintTop_toBottomOf="@+id/addPostImageBtnCard"
            android:text="@={postViewModel.titleLiveData}"
-           android:inputType="text" />
+           android:inputType="text"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"/>
 
 
         <EditText
@@ -69,30 +81,42 @@
             android:text="@={postViewModel.descriptionLiveData}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addPostTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/addPostTitle"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"/>
 
-       <Button
-           android:id="@+id/addPostBtn"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="@dimen/addPostBtnToDescription"
-           android:text="@string/addPostBtn"
-           android:clickable="true"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/addPostDescription"
-           android:onClick="@{()->postViewModel.onAddPost(addPostImageBtn)}"
-           android:backgroundTint="@android:color/background_dark"/>
-
-        <Button
-            android:id="@+id/address"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/addPostPrice"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Button"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:hint="Price"
+            android:inputType="number"
+            android:text="@={postViewModel.priceLiveData}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addPostBtn" />
+            app:layout_constraintTop_toBottomOf="@+id/addPostDescription"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"/>
+
+        <Button
+            android:id="@+id/addPostBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:backgroundTint="@android:color/background_dark"
+            android:clickable="true"
+            android:onClick="@{()->postViewModel.onAddPost(addPostImageBtn)}"
+            android:text="@string/addPostBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

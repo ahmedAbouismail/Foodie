@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ import androidx.fragment.app.findFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
@@ -31,6 +33,7 @@ import de.abou.foodie.R
 import de.abou.foodie.database.MyFirestore
 import de.abou.foodie.databinding.PostFragmentBinding
 import de.abou.foodie.screens.MapsFragment
+import de.abou.foodie.screens.title.setImage
 
 /**
  * In this Fragment can the user add a new post
@@ -108,13 +111,13 @@ class PostFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        binding.addPostImageBtn.setBackgroundResource(R.drawable.ic_add_photo_post_70)
         //set the image in the view
-        binding.addPostImageBtn.setImageURI(data?.data)
-        if (data?.data != null){
-            //remove the drawable icon if image was added from the gallery
-            binding.addPostImageBtn.setBackgroundResource(0)
-        }
+        Glide
+                .with(this)
+                .load(data?.data)
+                .centerCrop()
+                .placeholder(R.drawable.ic_add_photo_post_70)
+                .into(binding.addPostImageBtn);
 
     }
 
