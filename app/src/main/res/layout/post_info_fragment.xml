@@ -71,6 +71,8 @@
             app:layout_constraintTop_toBottomOf="@id/postInfoTitle"
             app:layout_constraintVertical_bias="0.076" />
 
+
+
         <EditText
             android:id="@+id/ownerPostTitle"
             style="@style/textInFields"
@@ -100,6 +102,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/postInfoTitle"
             app:layout_constraintVertical_bias="0.076" />
+
+        <TextView
+            android:id="@+id/ownerPriceTitleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/ownerPriceTitle"
+            style="@style/textInFields"
+            android:text="Price"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ownerPriceTitle"
+            app:layout_constraintBottom_toTopOf="@id/ownerPriceTitle"
+            app:layout_constraintEnd_toStartOf="@id/ownerPriceTitle"/>
+        <EditText
+            android:id="@+id/ownerPriceTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@={viewModel.priceLiveData}"
+            style="@style/textInFields"
+            android:visibility="invisible"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ownerPostDescription" />
 
         <Button
             android:id="@+id/editBtn"
@@ -217,6 +244,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ownerName" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

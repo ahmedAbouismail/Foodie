@@ -34,6 +34,7 @@ class PostInfoViewModel:ViewModel() {
     var imageRefLiveData= MutableLiveData<String>()
     var imageLiveData = MutableLiveData<Uri>()
     var postOwnerIdLiveData = MutableLiveData<String>()
+    var priceLiveData = MutableLiveData<String>()
 
     var switchCheckedLiveData =  MutableLiveData<Boolean>()
 
@@ -77,13 +78,7 @@ class PostInfoViewModel:ViewModel() {
     //get the post-owner data to show it in as info
     fun getOwnerData() {
         viewModelScope.launch {
-            Log.i("PostDetails", postOwnerIdLiveData.value.toString())
             val user = _db.getUserByUserId(postOwnerIdLiveData.value.toString())
-            if (user != null) {
-                Log.i("PostDetails", user.email)
-                Log.i("PostDetails", user.firstName)
-                Log.i("PostDetails", postOwnerIdLiveData.value.toString())
-            }
             ownerEmailLiveData.value = user?.email.toString()
             ownerNameLiveData.value = user?.firstName + " " + user?.lastName
         }
@@ -195,8 +190,11 @@ class PostInfoViewModel:ViewModel() {
 
     private suspend fun updatePost(title:String, description:String, photo:String){
         viewModelScope.launch {
-            Log.i("InfoPost", postIdLiveData.value.toString())
-            _updatePostLivedata.value = _db.updatePost(postIdLiveData.value.toString(),title, description, photo) }
+            _updatePostLivedata.value = _db.updatePost(
+                    postIdLiveData.value.toString()
+                    ,title
+                    , description, photo
+                    , priceLiveData.value.toString()) }
     }
 
 

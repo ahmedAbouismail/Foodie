@@ -170,12 +170,13 @@ class MyFirestore {
      * @param photo the new photo download link to update in post
      * @return true if the process successfully complete
      */
-    suspend fun updatePost(postId: String, title: String, description: String, photo: String):Boolean {
+    suspend fun updatePost(postId: String, title: String, description: String, photo: String, price:String):Boolean {
         return try {
             withContext(Dispatchers.IO) {
                 var task = _Firestore.collection(Constants.POSTS)
                         .document(postId)
-                        .update(mapOf("title" to title, "description" to description, "photo" to photo)).await()
+                        .update(mapOf("title" to title, "description" to description, "photo" to photo,
+                                "price" to "$price $")).await()
                 true
             }
         } catch (e: FirebaseFirestoreException) {

@@ -63,7 +63,7 @@
         android:id="@+id/myPostsFragment"
         android:name="de.abou.foodie.screens.myPosts.MyPostsFragment"
         android:label="My Posts"
-        tools:layout="@layout/my_posts_fragment" >
+        tools:layout="@layout/my_posts_fragment">
         <action
             android:id="@+id/action_myPostsFragment_to_postInfoFragment"
             app:destination="@id/postInfoFragment" />

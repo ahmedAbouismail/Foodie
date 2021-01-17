@@ -75,6 +75,8 @@ class PostInfoFragment : Fragment(){
                     binding.ownerEmailLabel.visibility = View.INVISIBLE
                     binding.ownerEmail.visibility = View.INVISIBLE
                     binding.ownerName.visibility = View.INVISIBLE
+                    binding.ownerPriceTitle.visibility = View.VISIBLE
+                    binding.ownerPriceTitleLabel.visibility = View.VISIBLE
                 }
             }
             //check if the post was subscribed  from the current used
@@ -139,12 +141,10 @@ class PostInfoFragment : Fragment(){
         viewModel.checkPermissionLiveData.observe(viewLifecycleOwner, Observer {it
             when{
                 it-> {
-                    Toast.makeText(activity, "Bye", Toast.LENGTH_SHORT).show()
                     permissionGranted()
                     openGalleryForImage()
                 }
                 else->{
-                    Toast.makeText(activity, "Bye Bye", Toast.LENGTH_SHORT).show()
                     requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PostFragment.REQUEST_CODE)
                 }
             }

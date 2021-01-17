@@ -87,7 +87,15 @@ class PostFragment : Fragment() {
                     NavHostFragment.findNavController(this).navigate(action)
                     Toast.makeText(context, "Post added Successfully", Toast.LENGTH_SHORT).show()
                 }else->{
-                Toast.makeText(context, "A filed was empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Pleas fill all fields", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
+        viewModel.resizeImageLiveData.observe(viewLifecycleOwner, Observer {
+            when{
+                it.not()->{
+                    Toast.makeText(context, "Please Choose Image", Toast.LENGTH_SHORT).show()
                 }
             }
         })

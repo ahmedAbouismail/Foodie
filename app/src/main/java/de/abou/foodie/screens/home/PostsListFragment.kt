@@ -109,6 +109,7 @@ class PostsListFragment : Fragment(), CellClickListener {
         postInfoViewModel.imageRefLiveData.value = data.imageRef
         postInfoViewModel.switchCheckedLiveData.value = data.subscribe
         postInfoViewModel.postOwnerIdLiveData.value = data.owner
+        postInfoViewModel.priceLiveData.value = data.price
         moveToPostInfo()
     }
 

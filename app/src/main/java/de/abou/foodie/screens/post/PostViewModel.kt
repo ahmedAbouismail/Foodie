@@ -3,9 +3,11 @@ package de.abou.foodie.screens.post
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.VectorDrawable
 import android.util.Log
 import android.widget.ImageView
 import androidx.lifecycle.*
+import com.bumptech.glide.load.engine.GlideException
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
@@ -47,6 +49,10 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
     private lateinit var resizedImage : Bitmap
     private var baos = ByteArrayOutputStream()
 
+    private var _resizeImageLiveData = MutableLiveData<Boolean>()
+    val resizeImageLiveData : LiveData<Boolean>
+    get() = _resizeImageLiveData
+
 
 
 
@@ -69,10 +75,16 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
      * @param imageView get the image view from the xml to convert the image to bitmap
      */
     private fun modifyImage(imageView : ImageView){
-
-        bitmap = (imageView.drawable as BitmapDrawable).bitmap
-        resizedImage = resizeBitmap(bitmap, maxLength)
-
+        try {
+            bitmap = (imageView.drawable as BitmapDrawable).bitmap
+            resizedImage = resizeBitmap(bitmap, maxLength)
+        }catch (e:GlideException){
+            _resizeImageLiveData.value = false
+        }catch (e:Exception){
+            _resizeImageLiveData.value = false
+        }catch (e:UninitializedPropertyAccessException){
+            _resizeImageLiveData.value = false
+        }
     }
 
     /**
@@ -130,19 +142,32 @@ class PostViewModel(val database:MyFirestore,  application: Application) :Androi
                 //get the uri-download of the image
                 var uri = myFirebaseStorage.getImageUri()
                 //create new post object and put the new data in it
-                var post = Post(owner = currentUser,
-                        title = titleLiveData.value.toString()
-                        ,description = descriptionLiveData.value.toString()
-                        ,price = priceLiveData.value!! + " $"
-                        ,imageRef = ref
-                        ,photo = uri)
-                //finally insert the post obj in the Db
-                insertPostToDb(post)
+                try {
+                    if (priceLiveData.value.isNullOrEmpty()){
+                        priceLiveData.value = "0"
+                    }
+                    var post = Post(owner = currentUser,
+                            title = titleLiveData.value.toString()
+                            ,description = descriptionLiveData.value.toString()
+                            ,price = priceLiveData.value + " $"
+                            ,imageRef = ref
+                            ,photo = uri)
+                    //finally insert the post obj in the Db
+                    insertPostToDb(post)
+                }catch (e:NullPointerException){
+                    _updatePostLivedata.value = false
+                }catch (e: IllegalArgumentException){
+                    _updatePostLivedata.value = false
+                }catch (e:UninitializedPropertyAccessException){
+                    _resizeImageLiveData.value = false
+                }
             }
         }catch (e: NullPointerException){
             _updatePostLivedata.value = false
         }catch (e: IllegalArgumentException){
             _updatePostLivedata.value = false
+        }catch (e:UninitializedPropertyAccessException){
+            _resizeImageLiveData.value = false
         }
 
     }
