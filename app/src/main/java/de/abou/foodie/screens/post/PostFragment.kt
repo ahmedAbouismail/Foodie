@@ -63,7 +63,6 @@ class PostFragment : Fragment() {
         val viewModelFactory = PostViewModelFactory(dataSource, application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(PostViewModel::class.java)
 
-        observeAuthenticationState()
 
         binding.lifecycleOwner = this
         binding.postViewModel = viewModel
@@ -143,17 +142,5 @@ class PostFragment : Fragment() {
         }catch (e: ActivityNotFoundException){
             Toast.makeText(context, "Can't open the Gallery", Toast.LENGTH_SHORT).show()
         }
-    }
-
-
-    private fun observeAuthenticationState() {
-        val action = PostFragmentDirections.actionPostViewToSignInFragment()
-        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            when(authenticationState){
-                PostViewModel.AuthenticationState.UNAUTHENTICATED ->{
-                    NavHostFragment.findNavController(this).navigate(action)
-                }
-            }
-        })
     }
 }

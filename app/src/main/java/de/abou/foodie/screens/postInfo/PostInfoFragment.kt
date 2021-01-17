@@ -114,6 +114,10 @@ class PostInfoFragment : Fragment(){
         binding.postInfoImage.setOnClickListener{
             checkPermission()
         }
+
+        viewModel.postOwnerIdLiveData.observe(viewLifecycleOwner, Observer {
+            viewModel.getOwnerData()
+        })
     }
 
     private fun moveToMyPosts() {
@@ -148,6 +152,11 @@ class PostInfoFragment : Fragment(){
         super.onActivityResult(requestCode, resultCode, data)
         binding.postInfoImage.setImageURI(data?.data)
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.postOwnerIdLiveData.value = ""
     }
 
     private fun permissionGranted() = ContextCompat.checkSelfPermission(

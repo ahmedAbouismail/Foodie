@@ -70,15 +70,20 @@ class PostInfoViewModel:ViewModel() {
 
     init {
         getPosts()
-        getOwnerData()
         //for the first use must be false to ask for the permission and then will be always true and the user will not be asked any more for the perm.
         checkPermissionLiveData.value = false
     }
 
     //get the post-owner data to show it in as info
-    private fun getOwnerData() {
+    fun getOwnerData() {
         viewModelScope.launch {
-            val user = _db.getUserByUserId(postOwnerIdLiveData.toString())
+            Log.i("PostDetails", postOwnerIdLiveData.value.toString())
+            val user = _db.getUserByUserId(postOwnerIdLiveData.value.toString())
+            if (user != null) {
+                Log.i("PostDetails", user.email)
+                Log.i("PostDetails", user.firstName)
+                Log.i("PostDetails", postOwnerIdLiveData.value.toString())
+            }
             ownerEmailLiveData.value = user?.email.toString()
             ownerNameLiveData.value = user?.firstName + " " + user?.lastName
         }

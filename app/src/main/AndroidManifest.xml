@@ -35,7 +35,8 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-4754008645653620~3819003508" />
 
-        <activity android:name=".screens.mainActivity.MainActivity">
+        <activity android:name=".screens.mainActivity.MainActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

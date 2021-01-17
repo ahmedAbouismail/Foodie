@@ -112,6 +112,7 @@
             app:layout_constraintTop_toBottomOf="@+id/ownerPostDescription"
             app:layout_constraintVertical_bias="0.695" />
 
+
         <TextView
             android:id="@+id/ownerName"
             android:layout_width="wrap_content"

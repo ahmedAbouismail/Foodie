@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+    <style name="AppTheme" parent="Theme.AppCompat">
+        <item name="android:windowBackground">@drawable/main_background</item>
+    </style>
+    <style name="roundedConner">
+        <item name="borderWidth">2dp</item>
+        <item name="cornerRadius">50dp</item>
+    </style>
+
+
+</resources>

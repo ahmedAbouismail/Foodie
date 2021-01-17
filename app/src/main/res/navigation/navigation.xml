@@ -3,30 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/postsListFragment">
 
     <fragment
         android:id="@+id/postsListFragment"
         android:name="de.abou.foodie.screens.home.PostsListFragment"
-        android:label="fragment_posts"
+        android:label="Home"
         tools:layout="@layout/posts_list_fragment" >
 
 
-
-        <action
-            android:id="@+id/action_postsListFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
         <action
             android:id="@+id/action_postsListFragment_to_postInfoFragment"
-            app:destination="@id/postInfoFragment" />
+            app:destination="@id/postInfoFragment"
+            app:popUpTo="@id/postsListFragment" />
         <action
             android:id="@+id/action_postsListFragment_to_postView"
             app:destination="@id/postView" />
+        <action
+            android:id="@+id/action_postsListFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
         android:name="de.abou.foodie.screens.regestration.signIn.SignInFragment"
-        android:label="SignInFragment" >
+        android:label="Sign in" >
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
@@ -38,7 +38,7 @@
     <fragment
         android:id="@+id/signUpFragment"
         android:name="de.abou.foodie.screens.regestration.signUp.SignUpFragment"
-        android:label="sign_up_fragment"
+        android:label="Sign Up"
         tools:layout="@layout/sign_up_fragment" >
         <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
@@ -50,12 +50,9 @@
     <fragment
         android:id="@+id/postView"
         android:name="de.abou.foodie.screens.post.PostFragment"
-        android:label="post_fragment"
+        android:label="Create Post"
         tools:layout="@layout/post_fragment" >
 
-        <action
-            android:id="@+id/action_postView_to_signInFragment"
-            app:destination="@id/signInFragment" />
         <action
             android:id="@+id/action_postView_to_myPostsFragment"
             app:destination="@id/myPostsFragment" />
@@ -63,11 +60,8 @@
     <fragment
         android:id="@+id/myPostsFragment"
         android:name="de.abou.foodie.screens.myPosts.MyPostsFragment"
-        android:label="my_posts_fragment"
+        android:label="My Posts"
         tools:layout="@layout/my_posts_fragment" >
-        <action
-            android:id="@+id/action_myPostsFragment_to_postFragment"
-            app:destination="@id/postView" />
         <action
             android:id="@+id/action_myPostsFragment_to_postInfoFragment"
             app:destination="@id/postInfoFragment" />
@@ -75,7 +69,7 @@
     <fragment
         android:id="@+id/signOutFragment"
         android:name="de.abou.foodie.screens.regestration.Signout.SignOutFragment"
-        android:label="fragment_signout"
+        android:label="sign out"
         tools:layout="@layout/fragment_signout" >
         <action
             android:id="@+id/action_signOutFragment_to_signInFragment"
@@ -84,11 +78,13 @@
     <fragment
         android:id="@+id/postInfoFragment"
         android:name="de.abou.foodie.screens.postInfo.PostInfoFragment"
-        android:label="post_info_fragment"
+        android:label="Post Details"
         tools:layout="@layout/post_info_fragment" >
         <action
             android:id="@+id/action_postInfoFragment_to_myPostsFragment"
-            app:destination="@id/myPostsFragment" />
+            app:destination="@id/myPostsFragment"
+            app:popUpTo="@id/myPostsFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <activity
         android:id="@+id/mainActivity"
@@ -97,27 +93,24 @@
     <fragment
         android:id="@+id/user_info"
         android:name="de.abou.foodie.screens.userInfo.UserInfoFragment"
-        android:label="fragment_unser_info"
+        android:label="Personal Info"
         tools:layout="@layout/user_info_fragment" >
         <action
             android:id="@+id/action_user_info_to_postsListFragment"
             app:destination="@id/postsListFragment" />
     </fragment>
     <fragment
-        android:id="@+id/splashFragment"
-        android:name="de.abou.foodie.screens.title.SplashFragment"
-        android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash" >
-        <action
-            android:id="@+id/action_splashFragment_to_myPostsFragment"
-            app:destination="@id/myPostsFragment" />
-        <action
-            android:id="@+id/action_splashFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/subscribed_posts_list"
         android:name="de.abou.foodie.screens.mySubscribedPosts.SubscribedPostsFragment"
-        android:label="subscribed_posts_fragment"
-        tools:layout="@layout/subscribed_posts_fragment" />
+        android:label="subscribed posts"
+        tools:layout="@layout/subscribed_posts_fragment" >
+        <action
+            android:id="@+id/action_subscribed_posts_list_to_subscriberListFragment"
+            app:destination="@id/subscriberListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/subscriberListFragment"
+        android:name="de.abou.foodie.User.SubscriberListFragment"
+        android:label="Subscriber Info"
+        tools:layout="@layout/subscriber_list_fragment" />
 </navigation>

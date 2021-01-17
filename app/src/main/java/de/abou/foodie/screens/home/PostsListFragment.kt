@@ -1,5 +1,6 @@
 package de.abou.foodie.screens.home
 
+import android.app.ActionBar
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import de.abou.foodie.R
 import de.abou.foodie.database.Post
 import de.abou.foodie.databinding.PostsListFragmentBinding
@@ -67,17 +70,22 @@ class PostsListFragment : Fragment(), CellClickListener {
     }
 
     private fun observeAuthenticationState() {
-        val action = PostsListFragmentDirections.actionPostsListFragmentToSignInFragment()
         viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when(authenticationState){
                 PostsListViewModel.AuthenticationState.AUTHENTICATED ->{
                     updateUI()
                     Toast.makeText(activity, "SignedIn", Toast.LENGTH_SHORT).show()
                 }else->{
-                    NavHostFragment.findNavController(this).navigate(action)
+                moveToSignIN()
+                    Toast.makeText(activity, "please sign in to see the content", Toast.LENGTH_SHORT).show()
                 }
             }
         })
+    }
+
+    private fun moveToSignIN() {
+        var action = PostsListFragmentDirections.actionPostsListFragmentToSignInFragment()
+        NavHostFragment.findNavController(this).navigate(action)
     }
 
 

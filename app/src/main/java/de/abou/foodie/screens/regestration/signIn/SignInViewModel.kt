@@ -44,8 +44,8 @@ class SignInViewModel():ViewModel() {
          }catch (e: NullPointerException){
              _eventSignIn.value = false
          }
-
     }
+
 
     enum class AuthenticationState {
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION

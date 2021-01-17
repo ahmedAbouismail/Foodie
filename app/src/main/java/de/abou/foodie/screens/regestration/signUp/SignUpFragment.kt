@@ -52,6 +52,32 @@ import de.abou.foodie.databinding.SignUpFragmentBinding
             }
         })
 
+        viewModel.vaildPassowrdLiveData.observe(viewLifecycleOwner, Observer {
+            when{
+                it.not()->{
+                    Toast.makeText(context, "Please enter stronger password", Toast.LENGTH_SHORT).show()
+                    viewModel.resetVaildPassowrdLiveData()
+                }
+            }
+        })
+
+        viewModel.vaildEmailLiveData.observe(viewLifecycleOwner, Observer {
+            when{
+                it.not()->{
+                    Toast.makeText(context, "Please enter correct email form", Toast.LENGTH_SHORT).show()
+                    viewModel.resetVaildEmailLiveData()
+                }
+            }
+        })
+
+        viewModel.vaildInputLiveData.observe(viewLifecycleOwner, Observer {
+            when{
+                it.not()->{
+                    Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                    viewModel.resetVaildInputLiveData()
+                }
+            }
+        })
     }
 
 

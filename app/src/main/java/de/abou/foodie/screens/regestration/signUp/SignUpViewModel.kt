@@ -2,10 +2,7 @@ package de.abou.foodie.screens.regestration.signUp
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import de.abou.foodie.database.MyFirestore
@@ -30,8 +27,9 @@ class SignUpViewModel:ViewModel() {
     var firstName = MutableLiveData<String>()
     var lastName = MutableLiveData<String>()
 
-    private var exist : Boolean = false
-
+    var vaildPassowrdLiveData = MutableLiveData<Boolean>()
+    var vaildEmailLiveData = MutableLiveData<Boolean>()
+    var vaildInputLiveData = MutableLiveData<Boolean>()
 
     //Live Data
     private val _eventSignUp = MutableLiveData<Boolean>()
@@ -48,7 +46,26 @@ class SignUpViewModel:ViewModel() {
                 _eventSignUp.value = true
             } catch (e: FirebaseAuthUserCollisionException) {
                 _eventSignUp.value = false
+            }catch (e: FirebaseAuthWeakPasswordException){
+                vaildPassowrdLiveData.value = false
+            }catch (e: FirebaseAuthInvalidCredentialsException){
+                vaildEmailLiveData.value = false
+            }catch (e: NullPointerException){
+                vaildInputLiveData.value = false
+            }catch (e: IllegalArgumentException){
+                vaildInputLiveData.value = false
             }
         }
+    }
+
+    fun resetVaildPassowrdLiveData() {
+        vaildPassowrdLiveData.value = true
+    }
+    fun resetVaildEmailLiveData() {
+        vaildPassowrdLiveData.value = true
+    }
+
+    fun resetVaildInputLiveData() {
+        vaildInputLiveData.value = true
     }
 }

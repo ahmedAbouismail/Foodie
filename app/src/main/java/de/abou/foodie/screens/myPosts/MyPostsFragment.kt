@@ -53,7 +53,7 @@ class MyPostsFragment : Fragment(), CellClickListener {
         })
 
         binding.addPostBtn.visibility = View.INVISIBLE
-        setHasOptionsMenu(true)
+
         return binding.root
     }
 

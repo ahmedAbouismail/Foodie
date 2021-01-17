@@ -30,13 +30,6 @@ class UserInfoViewModel:ViewModel() {
     val taskLiveData : LiveData<Boolean>
         get() = _taskLiveData
 
-    private lateinit var bitmap : Bitmap
-    private lateinit var resizedImage : Bitmap
-    private var baos = ByteArrayOutputStream()
-    private var aspectRatio : Double = 0.0
-    private var targetWidth: Int = 0
-    private var targetHeight : Int = 0
-
     init {
         getUserInfo()
         checkPermissionLiveData.value = false

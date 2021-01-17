@@ -55,33 +55,17 @@ class SplashFragment : Fragment() {
         )
         viewModel = ViewModelProvider(this).get(SplashViewModel::class.java)
 
+
         binding.lifecycleOwner = this
+        setHasOptionsMenu(false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeAuthenticationState()
-    }
-    private fun observeAuthenticationState() {
-        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            when(authenticationState){
-                SplashViewModel.AuthenticationState.AUTHENTICATED ->{
-                    Handler(Looper.getMainLooper()).postDelayed({moveToHome()}, 2000)
-                }else->{
-                Handler(Looper.getMainLooper()).postDelayed({moveToSignIn()}, 2000)
-            }
-            }
-        })
+
     }
 
-    private fun moveToHome(){
-        val action = SplashFragmentDirections.actionSplashFragmentToMyPostsFragment()
-        NavHostFragment.findNavController(this).navigate(action)
-    }
-    private fun moveToSignIn(){
-        val action = SplashFragmentDirections.actionSplashFragmentToSignInFragment()
-        NavHostFragment.findNavController(this).navigate(action)
-    }
+
 
 }

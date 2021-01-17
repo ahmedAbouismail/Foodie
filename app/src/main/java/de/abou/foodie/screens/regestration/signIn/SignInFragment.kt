@@ -9,11 +9,14 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 
 import de.abou.foodie.R
 import de.abou.foodie.databinding.SignInFragmentBinding
+import de.abou.foodie.screens.postInfo.PostInfoViewModel
+import de.abou.foodie.screens.regestration.signUp.SignUpViewModel
 
 
 class SignInFragment : Fragment() {
@@ -23,9 +26,11 @@ class SignInFragment : Fragment() {
 
     private lateinit var binding: SignInFragmentBinding
 
+    private val signUpViewModel : SignUpViewModel by activityViewModels()
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
 
         viewModel = ViewModelProvider(this).get(SignInViewModel::class.java)
 
@@ -37,6 +42,7 @@ class SignInFragment : Fragment() {
 
         binding.signInViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
 
 
 
@@ -54,15 +60,14 @@ class SignInFragment : Fragment() {
                     if (viewModel.email.value.isNullOrEmpty() || viewModel.password.value.isNullOrEmpty()) {
                         Toast.makeText(context, "please fill the fields", Toast.LENGTH_SHORT).show()
                     }else{
-                        Toast.makeText(activity, "Please sign up", Toast.LENGTH_SHORT).show()
                         moveToSignUp()
+                        Toast.makeText(activity, "Please sign up", Toast.LENGTH_SHORT).show()
                     }
 
                 }
             }
         })
     }
-
 
     private fun moveToSignUp() {
         val actionToSignUp = SignInFragmentDirections.actionSignInFragmentToSignUpFragment()

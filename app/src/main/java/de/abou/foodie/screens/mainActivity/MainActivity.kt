@@ -2,11 +2,13 @@ package de.abou.foodie.screens.mainActivity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import de.abou.foodie.R
 import de.abou.foodie.databinding.ActivityMainBinding
@@ -22,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
@@ -30,18 +33,22 @@ class MainActivity : AppCompatActivity() {
         // Create Drawer Button
         drawerLayout = binding.drawerLayout
         //Add navView To MainActivity
-        val navController = this.findNavController(R.id.myNavHostFragment)
+
+
 
 
         //Add Drawer to Action Bar
+        val navController = this.findNavController(R.id.myNavHostFragment)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navView, navController)
 
+        observeAuthenticationState()
         //To hide the Bar
-        supportActionBar?.hide()
+//        supportActionBar?.hide()
 
         //Authentication Check
-        observeAuthenticationState()
+
+
 
     }
 
