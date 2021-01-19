@@ -19,6 +19,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import de.abou.foodie.R
+import de.abou.foodie.database.MyFirestore
 import de.abou.foodie.databinding.PostInfoFragmentBinding
 import de.abou.foodie.screens.post.PostFragment
 import de.abou.foodie.screens.postInfo.PostInfoViewModel
@@ -33,7 +34,6 @@ class PostInfoFragment : Fragment(){
     private lateinit var binding : PostInfoFragmentBinding
 
     private val viewModel : PostInfoViewModel by activityViewModels()
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -61,23 +61,20 @@ class PostInfoFragment : Fragment(){
      */
     private fun updateUI() {
         viewModel.userLiveData.observe(viewLifecycleOwner, Observer {
-            for (id in it.idsOfPosts){
-                if (id == viewModel.postIdLiveData.value){
-                    Log.i("A7a", id)
-                    binding.subscribe.visibility = View.INVISIBLE
-                    binding.editBtn.visibility = View.VISIBLE
-                    binding.deleteBtn.visibility = View.VISIBLE
-                    binding.postInfoTitle.visibility = View.INVISIBLE
-                    binding.postInfoDescription.visibility = View.INVISIBLE
-                    binding.ownerPostTitle.visibility = View.VISIBLE
-                    binding.ownerPostDescription.visibility = View.VISIBLE
-                    binding.ownerNameLabel.visibility = View.INVISIBLE
-                    binding.ownerEmailLabel.visibility = View.INVISIBLE
-                    binding.ownerEmail.visibility = View.INVISIBLE
-                    binding.ownerName.visibility = View.INVISIBLE
-                    binding.ownerPriceTitle.visibility = View.VISIBLE
-                    binding.ownerPriceTitleLabel.visibility = View.VISIBLE
-                }
+            if(viewModel.postOwnerIdLiveData.value == getCurrentUserId()){
+                binding.subscribe.visibility = View.INVISIBLE
+                binding.editBtn.visibility = View.VISIBLE
+                binding.deleteBtn.visibility = View.VISIBLE
+                binding.postInfoTitle.visibility = View.INVISIBLE
+                binding.postInfoDescription.visibility = View.INVISIBLE
+                binding.ownerPostTitle.visibility = View.VISIBLE
+                binding.ownerPostDescription.visibility = View.VISIBLE
+                binding.ownerNameLabel.visibility = View.INVISIBLE
+                binding.ownerEmailLabel.visibility = View.INVISIBLE
+                binding.ownerEmail.visibility = View.INVISIBLE
+                binding.ownerName.visibility = View.INVISIBLE
+                binding.ownerPriceTitle.visibility = View.VISIBLE
+                binding.ownerPriceTitleLabel.visibility = View.VISIBLE
             }
             //check if the post was subscribed  from the current used
             for(id in it.idsOfSubscribedPosts){
@@ -189,4 +186,8 @@ class PostInfoFragment : Fragment(){
         }
     }
 
+    private fun getCurrentUserId(): String {
+        Log.i(MyFirestore.TAG, FirebaseAuth.getInstance().currentUser!!.uid)
+        return FirebaseAuth.getInstance().currentUser!!.uid
+    }
 }

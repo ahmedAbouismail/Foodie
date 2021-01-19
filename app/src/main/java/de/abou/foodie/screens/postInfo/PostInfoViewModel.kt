@@ -69,8 +69,11 @@ class PostInfoViewModel:ViewModel() {
     private lateinit var resizedImage : Bitmap
     private var baos = ByteArrayOutputStream()
 
+    var startLiveData = MutableLiveData<Boolean>()
+
     init {
         getPosts()
+        startLiveData.value = true
         //for the first use must be false to ask for the permission and then will be always true and the user will not be asked any more for the perm.
         checkPermissionLiveData.value = false
     }
